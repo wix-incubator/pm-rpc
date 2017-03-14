@@ -1,4 +1,5 @@
 import * as pmrpc from '../src/pm-rpc/index'
+import 'whatwg-fetch'
 describe('passing functions', () => {
   let iframe
   it('should be able to pass functions as arguments', done => {
