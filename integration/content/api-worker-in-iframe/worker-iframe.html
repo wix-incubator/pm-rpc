@@ -1,0 +1,4 @@
+<script>
+  const worker = new Worker('/base/integration/content/api-worker-in-iframe/worker.js');
+  window.addEventListener('message', e => worker.postMessage(e.data, e.ports))
+</script>

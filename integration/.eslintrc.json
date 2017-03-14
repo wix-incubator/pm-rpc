@@ -1,0 +1,15 @@
+{
+  "env": {
+    "browser": true,
+    "node": false,
+    "worker": true,
+    "jasmine": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "lodash/prefer-lodash-method": "off",
+    "lodash/prefer-constant": "off"
+  }
+}

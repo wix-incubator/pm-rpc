@@ -1,0 +1,16 @@
+{
+  "plugins": ["lodash"],
+  "extends": ["wix-editor/node", "plugin:lodash/recommended"],
+  "env": {
+    "node": true,
+    "browser": false
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "rules": {
+    "semi": ["error", "never"],
+    "no-confusing-arrow": "off",
+    "lodash/path-style": ["error", "as-needed"]
+  }
+}

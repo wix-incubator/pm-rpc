@@ -1,0 +1,10 @@
+<script>
+  const worker = new Worker('/base/integration/content/client-worker-in-iframe/worker.js');
+  worker.addEventListener('message', e => {
+    if (e.data.finished) {
+      window.parent.finished(e.data.finished);
+    } else {
+      window.parent.postMessage(e.data, '*', e.ports);
+    }
+  });
+</script>
