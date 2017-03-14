@@ -15,7 +15,7 @@ module.exports = function (options) {
         ]
       }
     },
-    reporters: process.env.IS_BUILD_AGENT ? ['teamcity'] : ['progress', 'coverage'],
+    reporters: ['progress', 'coverage'],
     webpackMiddleware: {
       noInfo: true
     },
