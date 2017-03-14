@@ -1,5 +1,5 @@
 import * as pmrpc from '../src/pm-rpc/index.js'
-describe('usage with a web worker inside an iframe', () => {
+xdescribe('usage with a web worker inside an iframe', () => {
   let iframe
   function loadIframe() {
     return new Promise(resolve => {
