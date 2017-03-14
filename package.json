@@ -17,7 +17,7 @@
   "files": [
     "build"
   ],
-  "main": "build/pm-rpc.js",
+  "main": "build/pm-rpc.min.js",
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
