@@ -4,7 +4,7 @@ const merge = require('lodash/merge')
 
 module.exports = function (options) {
   return merge({
-    browsers: ['Chrome'],
+    browsers: [process.env.TRAVIS ? 'chrome_travis_ci': 'Chrome'],
     singleRun: true,
     frameworks: ['jasmine'],
     webpack: {
@@ -22,6 +22,12 @@ module.exports = function (options) {
     colors: true,
     coverageReporter: {
       type: 'json'
+    },
+    customLaunchers: {
+      chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
     }
   }, options)
 }
