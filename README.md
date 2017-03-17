@@ -26,6 +26,37 @@ const api = {
 rpc.api.set(appId, api);
 ```
 
+### Let's look at a real example: 
+Let the callee expose a 'maxOdd' function that recives as arguments a getNumbers and a filterOdd functions, and as a result return the max number.
+
+Please note that the callee expose it's API by calling <b>pmrpc.api.set</b>
+<br/>
+```javascript
+const api = {
+  maxOdd(getNumbers, getOdd) {
+    return getNumbers()
+      .then(getOdd)
+      .then(odds => Math.max(...odds))
+  }
+}
+pmrpc.api.set('functions', api)
+```
+
+The caller code will look as follow:
+
+```javascript
+pmrpc.api.request('functions', {target: iframe.contentWindow})
+  .then(api => {
+    const filterOdd = arr => arr.filter(x => x % 2)
+    const getNumbers = () => return [1, 2, 3, 4, 5, 6]
+
+    api.maxOdd(getNumbers, filterOdd)
+      .then(result => {
+        //result is 5 try it!
+    })
+})
+```
+
 #### Removing a set API
 The **callee** may remove an API, and stop listening for requests to it.
 This makes the API no longer available, and rejects any other requests for the API with an error message.
