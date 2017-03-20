@@ -7,5 +7,5 @@ module.exports = require('./make-webpack-config.js')({
   output: {
     filename: 'pm-rpc.min.js'
   },
-  plugins: [new webpack.optimize.UglifyJsPlugin({ minimize: true,  output: {comments: false} })]
+  plugins: [new webpack.optimize.UglifyJsPlugin({ minimize: true,  output: {comments: false}, sourceMap: true })]
 })
