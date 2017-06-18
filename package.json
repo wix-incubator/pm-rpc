@@ -21,6 +21,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "array-from": "^2.1.1",
     "babel-core": "6.24.0",
     "babel-loader": "6.4.0",
     "babel-plugin-istanbul": "4.0.0",
