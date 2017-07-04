@@ -11,6 +11,7 @@
   "rules": {
     "semi": ["error", "never"],
     "no-confusing-arrow": "off",
-    "lodash/path-style": ["error", "as-needed"]
+    "lodash/path-style": ["error", "as-needed"],
+    "lodash/prefer-lodash-method": "off"
   }
 }

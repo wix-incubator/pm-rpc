@@ -1,6 +1,10 @@
 import Intents from './Intents'
 import {send} from './messageManager'
-import mapValues from 'lodash/mapValues'
+import reduce from 'lodash/reduce'
+import assign from 'lodash/assign'
+import get from 'lodash/get'
+import set from 'lodash/set'
+import isFunction from 'lodash/isFunction'
 import * as argumentsSerializer from './argumentsSerializer'
 import {serialize as serializeError} from './errorSerializer'
 import handleFunctionResult from './handleFunctionResult'
@@ -13,9 +17,22 @@ const getRemoteCaller = (appId, targetInfo, call) => (...callArgs) => {
       .then(handleFunctionResult)
 }
 
-export const buildApiFromDescription = (appId, description, targetInfo) => mapValues(description, (dummy, call) => getRemoteCaller(appId, targetInfo, call))
+export const buildApiFromDescription = (appId, description, targetInfo) => reduce(
+  Object.keys(description).sort(),
+  (result, path) => set(result, path, getRemoteCaller(appId, targetInfo, path)),
+  {})
 
-export const getDescription = app => mapValues(app, () => DUMMY)
+
+function getFunctionInExactPath(val, path) {
+  return isFunction(val) ? {[path.join('.')]: DUMMY} : {}
+}
+
+const getFunctionsInPath = (path, obj) => {
+  const val = get(obj, path)
+  return reduce(val, (res, innerVal, key) => assign(res, getFunctionsInPath(path.concat([key]), obj)), getFunctionInExactPath(val, path))
+}
+
+export const getDescription = app => reduce(app, (res, val, key) => assign(res, getFunctionsInPath([key], app)), {})
 
 export const invokeApiFunction = (func, args, ports) => {
   try {

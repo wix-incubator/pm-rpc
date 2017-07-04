@@ -12,7 +12,7 @@ The **callee** must first `set` an API for consumption.
 This makes the API available for any callers requesting for an API with that ID.
 
 
-The API sent should be A flat object (functions directly under the root). The functions can be either synchronous or return promises.
+The API can be any object containing functions and/or namespaces, and namespaces can be functions as well.  
 e.g.:
 ```javascript
 const api = {
@@ -20,9 +20,21 @@ const api = {
     return someComputation(...args)
   },
   asyncFunc(...args) {
-    return performSomeAjaxRequest(args)
+    return performSomeAjaxRequest(...args)
+  },
+  
+  someNamespace: {
+    namespacedFunction(...args) {
+      doSomething(...args)
+    }
+  },
+  
+  add(a, b) { 
+    return a + b
   }
-}
+};
+
+api.add.one = a => 1 + a; //api.add is both a function and a namespace!
 rpc.api.set(appId, api);
 ```
 

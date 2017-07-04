@@ -19,6 +19,25 @@ describe('apiManager', () => {
       expect(description.hasOwnProperty('f')).toBe(true)
       expect(description.hasOwnProperty('g')).toBe(true)
     })
+
+    it('should work on deep objects', () => {
+        const API = {
+          ns: {
+            f: noop
+          }
+        }
+        const description = apiManager.getDescription(API)
+        expect(description).toEqual({'ns.f': true})
+    })
+
+    it('should work with functions as namespaces', () => {
+        const API = {
+          add: (a, b) => a + b
+        }
+        API.add.one = a => 1 + a
+        const description = apiManager.getDescription(API)
+        expect(description).toEqual({add: true, 'add.one': true})
+    })
   })
   describe('buildApiFromDescription', () => {
     const fakeId = 'fake-app'
@@ -30,6 +49,19 @@ describe('apiManager', () => {
       expect(every(remoteAPI, isFunction)).toBe(true)
       expect(remoteAPI.hasOwnProperty('f')).toBe(true)
       expect(remoteAPI.hasOwnProperty('g')).toBe(true)
+    })
+
+    it('should work with deep objects', () => {
+        const description = {'ns.f': true}
+        const remoteAPI = apiManager.buildApiFromDescription(fakeId, description, fakeTargetInfo)
+        expect(remoteAPI.ns).toEqual({f: jasmine.any(Function)})
+    })
+
+    it('should work with functions as namespaces', () => {
+        const description = {add: true, 'add.one': true}
+        const remoteAPI = apiManager.buildApiFromDescription(fakeId, description, fakeTargetInfo)
+        expect(isFunction(remoteAPI.add)).toBe(true)
+        expect(isFunction(remoteAPI.add.one)).toBe(true)
     })
 
     describe('method invocation in built API', () => {
