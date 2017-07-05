@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import * as appsRegistrar from './privates/appsRegistrar'
 import {isWorker, getChildFrameById} from './privates/windowModule'
 import Intents from './privates/Intents'
@@ -41,7 +42,7 @@ const onMessage = ({data: {appId, intent, call, args}, ports: [port, ...ports]})
       if (appData.onApiCall) {
         appData.onApiCall({appId, call, args})
       }
-      const func = appData.app[call]
+      const func = get(appData.app, call)
       return invokeApiFunction(func, args, ports)
         .then(sendResponse(port, Intents.RESOLVE), sendResponse(port, Intents.REJECT))
 
