@@ -1,5 +1,5 @@
 import * as pmrpc from '../src/pm-rpc/index'
-fdescribe('single iframe', () => {
+describe('single iframe', () => {
   it('should be able to run functions from deep namespaces', done => {
     const innerSpy = jasmine.createSpy('namespace.f')
     const app = {
