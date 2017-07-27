@@ -12,6 +12,8 @@ const getTargetInfoFromDef = ({target, initiator}) => {
       return {target: self, targetOrigin: '*'}
     case target === parent:
       return {target: parent, targetOrigin: '*'}
+    case target instanceof Worker:
+      return {target}
     case Boolean(target):
       if (target.contentWindow) {
         return {target: target.contentWindow, targetOrigin: target.src}
