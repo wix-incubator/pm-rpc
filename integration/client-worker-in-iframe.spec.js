@@ -1,5 +1,5 @@
 import * as pmrpc from '../src/pm-rpc/index'
-xdescribe('web worker inside an iframe', () => {
+describe('web worker inside an iframe', () => {
   let iframe
   beforeAll(done => {
     iframe = document.createElement('iframe')
