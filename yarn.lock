@@ -2719,9 +2719,9 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
-message-channel-promise@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/message-channel-promise/-/message-channel-promise-3.0.1.tgz#be61d8951fd0158c0023e2ac804d3455be615d71"
+message-channel-promise@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/message-channel-promise/-/message-channel-promise-3.0.2.tgz#de54caccafcbe0868c6202bf37abb2f849a4cc28"
 
 methods@~1.1.2:
   version "1.1.2"
