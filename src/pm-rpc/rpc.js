@@ -27,7 +27,8 @@ const getTargetInfoFromDef = ({target, initiator}) => {
   }
 }
 
-const onMessage = ({data: {appId, intent, call, args}, ports: [port, ...ports]}) => {
+const onMessage = ({data: {appId, intent, call, args}, ports: messagePorts}) => {
+  const [port, ...ports] = messagePorts || []
   switch (intent) {
     case Intents.REQUEST_API:
       const app = appsRegistrar.getAppById(appId)
