@@ -3,8 +3,8 @@ describe('rpc.set override', () => {
 
     it('should set new api whhen the name is the same. should unregister the old one and register the new one', done => {
         const name = 'functions-as-namespaces'
-        var func1 = jasmine.createSpy('func1')
-        var func2 = jasmine.createSpy('func2')
+        const func1 = jasmine.createSpy('func1')
+        const func2 = jasmine.createSpy('func2')
         pmrpc.api.set(name, {func1})
         pmrpc.api.request(name, {target: window})
             .then(api => {
@@ -17,8 +17,8 @@ describe('rpc.set override', () => {
                         expect(api.func1).not.toBeDefined()
                         expect(api.func2).toBeDefined()
                         pmrpc.api.unset(name)
-                        done();
-                    });
+                        done()
+                    })
             })
            .catch(done.fail)
 
