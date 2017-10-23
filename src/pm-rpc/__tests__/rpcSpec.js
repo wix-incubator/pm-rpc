@@ -45,7 +45,7 @@ describe('rpc', () => {
       function simulateRequest(data) {
         const handler = messageHandler.addSingleHandler.calls.mostRecent().args[0]
         const port = jasmine.createSpyObj(['postMessage'])
-        const promise = handler({data, ports: [port]})
+        const promise = hZandler({data, ports: [port]})Z
         return {port, promise}
       }
 
