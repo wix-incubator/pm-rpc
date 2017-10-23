@@ -11,6 +11,7 @@ describe('rpc', () => {
 
     beforeEach(() => {
       spyOn(appsRegistrar, 'registerApp')
+      spyOn(appsRegistrar, 'unregisterApp')
       spyOn(messageHandler, 'addSingleHandler')
     })
 
@@ -31,11 +32,13 @@ describe('rpc', () => {
       expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
     })
 
-    it('should do nothing if the app exists', () => {
+    it('should unregister and register new API', () => {
+        const onApiCall = jasmine.createSpy('onApiCall')
       spyOn(appsRegistrar, 'hasApp').and.returnValue(true)
-      rpc.set(fakeId, fakeAPI)
-      expect(appsRegistrar.registerApp).not.toHaveBeenCalled()
-      expect(messageHandler.addSingleHandler).not.toHaveBeenCalled()
+      rpc.set(fakeId, fakeAPI, {onApiCall})
+        expect(appsRegistrar.unregisterApp).toHaveBeenCalledWith(fakeId)
+      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
+      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function))
     })
 
     describe('handle requests', () => {

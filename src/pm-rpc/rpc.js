@@ -52,10 +52,12 @@ const onMessage = ({data: {appId, intent, call, args}, ports: messagePorts}) => 
 }
 
 export const set = (appId, app, {onApiCall} = {}) => {
-  if (!appsRegistrar.hasApp(appId)) {
-    appsRegistrar.registerApp(appId, app, onApiCall)
-    messageHandler.addSingleHandler(onMessage)
+  if (appsRegistrar.hasApp(appId)) {
+    appsRegistrar.unregisterApp(appId)
   }
+  appsRegistrar.registerApp(appId, app, onApiCall)
+  messageHandler.addSingleHandler(onMessage)
+
 }
 
 export const request = (appId, targetDef = {}) => {
