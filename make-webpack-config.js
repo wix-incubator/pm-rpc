@@ -14,9 +14,7 @@ const common = {
     path: `${__dirname}/build`,
     filename: 'pm-rpc.min.js',
     publicPath: '',
-    library: 'pmrpc',
-    libraryTarget: 'umd',
-    umdNamedDefine: true
+    libraryTarget: 'umd'
   },
   devtool: 'source-map',
   module: {
