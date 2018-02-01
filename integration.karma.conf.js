@@ -12,6 +12,7 @@ const options = require('./make-karma-config')({
   coverageReporter: {
     dir: 'coverage/integration'
   },
+  browsers: [process.env.TRAVIS ? 'chrome_travis_ci': 'ChromeHeadless', 'Firefox'],
 })
 
 module.exports = function (config) {

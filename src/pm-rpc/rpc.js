@@ -28,8 +28,9 @@ const getTargetInfoFromDef = ({target, initiator}) => {
   }
 }
 
-const onMessage = ({data: {appId, intent, call, args}, ports: messagePorts}) => {
-  const [port, ...ports] = messagePorts || []
+const onMessage = ({data: {appId, intent, call, args, __port}, ports: messagePorts}) => {
+  messagePorts = messagePorts || []
+  const port = __port || messagePorts[0]
   switch (intent) {
     case Intents.REQUEST_API:
       const app = appsRegistrar.getAppById(appId)
@@ -46,7 +47,7 @@ const onMessage = ({data: {appId, intent, call, args}, ports: messagePorts}) => 
         appData.onApiCall({appId, call, args})
       }
       const func = get(appData.app, call)
-      return invokeApiFunction(func, args, ports)
+      return invokeApiFunction(func, args, messagePorts.slice(1))
         .then(sendResponse(port, Intents.RESOLVE), sendResponse(port, Intents.REJECT))
 
   }
