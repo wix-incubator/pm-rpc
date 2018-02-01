@@ -1,4 +1,5 @@
 import map from 'lodash/map'
+import includes from 'lodash/includes'
 import {serialize as serialize, deserialize as deserialize} from '../argumentsSerializer'
 import {send} from '../messageManager'
 
@@ -12,7 +13,10 @@ describe('argumentsSerializer', () => {
     it('should serialize functions into the transfer argument', done => {
       const functions = [x => x, x => x + 1]
       const {args, transfer} = serialize(functions)
-      Promise.all(map(args, arg => send([0], {target: transfer[arg.index]})))
+      for (const arg of args) {
+        expect(includes(transfer, arg.port)).toBe(true)
+      }
+      Promise.all(map(args, arg => send([0], {target: arg.port})))
         .then(results => {
           expect(results).toEqual(map(functions, f => ({intent: 'resolve', result: f(0)})))
         })
@@ -30,8 +34,8 @@ describe('argumentsSerializer', () => {
       const serialized = [{type: 'function', index: 0}]
       const {port1, port2} = new MessageChannel()
       const remote = deserialize(serialized, [port2])
-      port1.onmessage = ({data, ports: [port]}) => {
-        port.postMessage({intent: 'resolve', result: data[0] + 1})
+      port1.onmessage = ({data}) => {
+        data.__port.postMessage({intent: 'resolve', result: data[0] + 1})
       }
       remote[0](1)
         .then(res => {

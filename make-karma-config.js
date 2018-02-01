@@ -1,10 +1,9 @@
 'use strict'
-const path = require('path')
 const merge = require('lodash/merge')
 
 module.exports = function (options) {
   return merge({
-    browsers: [process.env.TRAVIS ? 'chrome_travis_ci': 'Chrome'],
+    browsers: [process.env.TRAVIS ? 'chrome_travis_ci': 'ChromeHeadless'],
     singleRun: true,
     frameworks: ['jasmine'],
     webpack: {
@@ -25,7 +24,7 @@ module.exports = function (options) {
     },
     customLaunchers: {
       chrome_travis_ci: {
-        base: 'Chrome',
+        base: 'ChromeHeadless',
         flags: ['--no-sandbox']
       }
     }
