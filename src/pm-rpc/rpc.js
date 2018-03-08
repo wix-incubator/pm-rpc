@@ -11,7 +11,7 @@ const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
     case isWorker():
       return {target: self, targetOrigin: '*'}
-    case target === parent:
+    case typeof parent !== 'undefined' && target === parent:
       return {target: parent, targetOrigin: '*'}
     case target instanceof Worker:
       return {target}

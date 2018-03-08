@@ -240,6 +240,20 @@ describe('rpc', () => {
           .then(done)
       })
     })
+    describe('when request is in node', () => {
+      let _parent
+      beforeEach(() => {
+        _parent = window.parent
+        delete window.parent
+      })
+
+      afterEach(() => {
+        window.parent = _parent
+      })
+      it('should not fail when parent is missing', () => {
+        expect(() => rpc.request(fakeId)).toThrowError('Invalid target')
+      })
+    })
   })
 
   describe('unset API', () => {
