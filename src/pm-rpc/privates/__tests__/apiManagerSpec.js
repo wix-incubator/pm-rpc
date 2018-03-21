@@ -146,7 +146,7 @@ describe('apiManager', () => {
       const throwMyError = x => {throw new MyError(x)}
       apiManager.invokeApiFunction(throwMyError, serializeArgs(['error']).args)
         .catch(result => {
-          expect(result).toEqual({type: 'Error', message: 'error', stack: jasmine.any(String)})
+          expect(result).toEqual({type: 'MyError', message: 'error', stack: jasmine.any(String)})
         })
         .then(done)
     })
