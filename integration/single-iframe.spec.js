@@ -1,26 +1,22 @@
 import * as pmrpc from '../src/pm-rpc/index'
+import {waitForIframeLoaded} from './util/util'
+
 describe('single iframe', () => {
   let iframe
-  it('should be able to create an iframe and use an API from it', done => {
+  it('should be able to create an iframe and use an API from it', async () => {
     iframe = document.createElement('iframe')
     iframe.src = '/base/integration/content/single-iframe/single-frame.html'
     document.body.appendChild(iframe)
-    iframe.addEventListener('load', () => {
-      pmrpc.api.request('123', {target: iframe.contentWindow})
-        .then(api => {
-          const name = 'spider pig'
-          const testResolve = api.resolveName(name)
-            .then(result => {
-              expect(result).toBe(name)
-            })
-          const testReject = api.rejectPromise()
-            .catch(err => {
-              expect(err).toBe('rejected promise')
-            })
-          Promise.all([testResolve, testReject])
-            .then(() => done())
-        }, done.fail)
-    })
+    await waitForIframeLoaded(iframe)
+    const api = await pmrpc.api.request('123', {target: iframe.contentWindow})
+    const name = 'spider pig'
+    expect(await api.resolveName(name)).toBe(name)
+    try {
+      await api.rejectPromise()
+      throw new Error('reached code that should be unreachable')
+    } catch (err) {
+      expect(err).toBe('rejected promise')
+    }
   })
   afterAll(() => document.body.removeChild(iframe))
 })

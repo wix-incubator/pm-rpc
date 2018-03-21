@@ -4,6 +4,5 @@ const appIds = ['first', 'second']
 
 appIds.forEach(appId => {
   pmrpc.api.request(appId)
-    .then(api => api.version())
-    .then(finished => self.postMessage({finished}))
+    .then(api => api.resolve(appId))
 })

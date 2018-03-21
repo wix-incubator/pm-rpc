@@ -1,18 +1,18 @@
 'use strict'
-const path = require('path')
 const options = require('./make-karma-config')({
   preprocessors: {
     'integration/**/*.js': ['webpack', 'sourcemap']
   },
   files: [
-    {pattern: 'integration/**/*', included: false},
-    {pattern: 'src/pm-rpc/**/*', included: false},
-    {pattern: 'integration/**/*.spec.js', watched: false}
+    {pattern: 'integration/content/**/*', included: false},
+    'integration/*.spec.js'
   ],
   coverageReporter: {
     dir: 'coverage/integration'
   },
-  browsers: [process.env.TRAVIS ? 'chrome_travis_ci': 'ChromeHeadless', 'Firefox'],
+  useIframe: false,
+  browsers: [process.env.TRAVIS ? 'chrome_travis_ci' : 'ChromeHeadless', 'Firefox'],
+  concurrency: 1
 })
 
 module.exports = function (config) {

@@ -6,12 +6,14 @@
     "browser": false
   },
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 2017
   },
   "rules": {
     "semi": ["error", "never"],
     "no-confusing-arrow": "off",
     "lodash/path-style": ["error", "as-needed"],
-    "lodash/prefer-lodash-method": "off"
+    "lodash/prefer-lodash-method": "off",
+    "indent":"off",
+    "sort-imports": "off"
   }
 }

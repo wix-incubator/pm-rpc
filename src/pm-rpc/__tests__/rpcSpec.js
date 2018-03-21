@@ -8,7 +8,6 @@ import * as messageHandler from '../privates/messageHandler'
 
 describe('rpc', () => {
   describe('set API', () => {
-
     beforeEach(() => {
       spyOn(appsRegistrar, 'registerApp')
       spyOn(appsRegistrar, 'unregisterApp')
@@ -45,7 +44,7 @@ describe('rpc', () => {
       function simulateRequest(data) {
         const handler = messageHandler.addSingleHandler.calls.mostRecent().args[0]
         const port = jasmine.createSpyObj(['postMessage'])
-        const promise = handler({data, ports: [port]})
+        const promise = handler({data: Object.assign({__port: port}, data)})
         return {port, promise}
       }
 
@@ -170,7 +169,6 @@ describe('rpc', () => {
         rpc.request(fakeId)
         expect(messageManager.send).toHaveBeenCalledWith(requestMessage, {target: self, targetOrigin: '*'})
       })
-
     })
     describe('construct API on response', () => {
       const fakeTarget = {target: {}}

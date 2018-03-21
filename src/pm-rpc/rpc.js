@@ -28,15 +28,13 @@ const getTargetInfoFromDef = ({target, initiator}) => {
   }
 }
 
-const onMessage = ({data: {appId, intent, call, args, __port}, ports: messagePorts}) => {
-  messagePorts = messagePorts || []
-  const port = __port || messagePorts[0]
+const onMessage = ({data: {appId, intent, call, args, __port: port}}) => {
   switch (intent) {
     case Intents.REQUEST_API:
       const app = appsRegistrar.getAppById(appId)
       const description = app ? getDescription(app) : null
       port.postMessage(description)
-      return
+      return Promise.resolve()
     case Intents.INVOKE_FUNCTION:
       const appData = appsRegistrar.getAppData(appId)
       if (!appData) {
@@ -47,10 +45,10 @@ const onMessage = ({data: {appId, intent, call, args, __port}, ports: messagePor
         appData.onApiCall({appId, call, args})
       }
       const func = get(appData.app, call)
-      return invokeApiFunction(func, args, messagePorts.slice(1))
+      return invokeApiFunction(func, args)
         .then(sendResponse(port, Intents.RESOLVE), sendResponse(port, Intents.REJECT))
-
   }
+  return Promise.resolve()
 }
 
 export const set = (appId, app, {onApiCall} = {}) => {
@@ -59,7 +57,6 @@ export const set = (appId, app, {onApiCall} = {}) => {
   }
   appsRegistrar.registerApp(appId, app, onApiCall)
   messageHandler.addSingleHandler(onMessage)
-
 }
 
 export const request = (appId, targetDef = {}) => {

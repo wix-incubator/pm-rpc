@@ -2,5 +2,8 @@
   "env": {
     "browser": true,
     "jasmine": true
+  },
+  "rules": {
+    "lodash/import-scope": ["error", "full"]
   }
 }

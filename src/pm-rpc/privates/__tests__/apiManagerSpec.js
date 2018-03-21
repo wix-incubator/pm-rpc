@@ -1,21 +1,18 @@
 import * as apiManager from '../apiManager'
 import * as messageManager from '../messageManager'
-import size from 'lodash/size'
-import every from 'lodash/every'
-import isFunction from 'lodash/isFunction'
+import _ from 'lodash'
 import Intents from '../Intents'
-import noop from 'lodash/noop'
 import {serialize as serializeArgs} from '../argumentsSerializer'
 
 describe('apiManager', () => {
   describe('getDescription', () => {
     it('should return an object with the same keys and dummy values', () => {
       const API = {
-        f: noop,
-        g: noop
+        f: _.noop,
+        g: _.noop
       }
       const description = apiManager.getDescription(API)
-      expect(size(description)).toBe(size(API))
+      expect(_.size(description)).toBe(_.size(API))
       expect(description.hasOwnProperty('f')).toBe(true)
       expect(description.hasOwnProperty('g')).toBe(true)
     })
@@ -23,7 +20,7 @@ describe('apiManager', () => {
     it('should work on deep objects', () => {
         const API = {
           ns: {
-            f: noop
+            f: _.noop
           }
         }
         const description = apiManager.getDescription(API)
@@ -45,8 +42,8 @@ describe('apiManager', () => {
     it('should create an object with methods with the same keys as the description', () => {
       const description = {f: true, g: true}
       const remoteAPI = apiManager.buildApiFromDescription(fakeId, description, fakeTargetInfo)
-      expect(size(remoteAPI)).toBe(size(description))
-      expect(every(remoteAPI, isFunction)).toBe(true)
+      expect(_.size(remoteAPI)).toBe(_.size(description))
+      expect(_.every(remoteAPI, _.isFunction)).toBe(true)
       expect(remoteAPI.hasOwnProperty('f')).toBe(true)
       expect(remoteAPI.hasOwnProperty('g')).toBe(true)
     })
@@ -60,8 +57,8 @@ describe('apiManager', () => {
     it('should work with functions as namespaces', () => {
         const description = {add: true, 'add.one': true}
         const remoteAPI = apiManager.buildApiFromDescription(fakeId, description, fakeTargetInfo)
-        expect(isFunction(remoteAPI.add)).toBe(true)
-        expect(isFunction(remoteAPI.add.one)).toBe(true)
+        expect(_.isFunction(remoteAPI.add)).toBe(true)
+        expect(_.isFunction(remoteAPI.add.one)).toBe(true)
     })
 
     describe('method invocation in built API', () => {
@@ -118,7 +115,7 @@ describe('apiManager', () => {
         .then(done)
     })
 
-    it('should return a rejected promise if the function rejects the value', done =>  {
+    it('should return a rejected promise if the function rejects the value', done => {
       const rejected = x => Promise.reject(x)
       apiManager.invokeApiFunction(rejected, serializeArgs([1]).args)
         .catch(result => {

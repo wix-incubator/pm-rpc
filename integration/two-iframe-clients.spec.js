@@ -1,13 +1,12 @@
 import * as pmrpc from '../src/pm-rpc/index'
 describe('two iframes with different names', () => {
   let frames
-  it('should be able to create an iframe and use an API from it', done => {
+  it('should be able to set an API with multiple clients', async () => {
     const resolvers = []
-    window.success = x => {
-      resolvers[x]()
-    }
     pmrpc.api.set('two-iframe-clients', {
-      identity(x) {return x}
+      resolve(x) {
+        resolvers[x](x)
+      }
     })
 
     frames = [0, 1].map(index => {
@@ -19,13 +18,11 @@ describe('two iframes with different names', () => {
     const framesSuccessPromises = frames.map((x, i) => new Promise(resolve => {resolvers[i] = resolve}))
 
     frames.forEach(frame => {document.body.appendChild(frame)})
-
-    Promise.all(framesSuccessPromises)
-      .then(() => {delete window.success})
-      .then(done)
+    expect(await Promise.all(framesSuccessPromises)).toEqual([0, 1])
   })
 
   afterAll(() => {
+    delete window.success
     frames.forEach(frame => document.body.removeChild(frame))
     pmrpc.api.unset('two-iframe-clients')
   })

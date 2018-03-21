@@ -8,6 +8,6 @@ export default ({intent, result}) => {
     case Intents.REJECT:
       return Promise.reject(deserializeError(result))
     default:
-      break
+      return Promise.reject()
   }
 }

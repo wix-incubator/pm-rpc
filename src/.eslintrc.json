@@ -4,6 +4,9 @@
     "node": false,
     "worker": true
   },
+  "globals": {
+    "WorkerGlobalScope": false
+  },
   "parserOptions": {
     "sourceType": "module"
   }

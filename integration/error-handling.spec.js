@@ -3,63 +3,75 @@ describe('Error handling', () => {
   let worker
   let api
 
-  beforeAll(done => {
+  beforeAll(async () => {
     worker = new Worker('/base/integration/content/error-handling/worker.js')
-    pmrpc.api.request('errors', {target: worker})
-      .then(_api => api = _api)
-      .then(() => done())
+    api = await pmrpc.api.request('errors', {target: worker})
   })
 
-  it('should reject with a SyntaxError if it was thrown', done => {
-    api.throwSyntaxError('syntax error')
-      .then(done.fail, err => {
-        expect(err.constructor).toBe(SyntaxError)
-        expect(err.message).toBe('syntax error')
-      })
-      .then(done)
+  it('should reject with a SyntaxError if it was thrown', async () => {
+    let err
+    const message = 'syntax error'
+    try {
+      await api.throwSyntaxError(message)
+    } catch (e) {
+      err = e
+    }
+    expect(() => {throw err}).toThrowError(SyntaxError, message)
   })
 
-  it('should reject with a regular Error if a custom error type was thrown', done => {
-    api.throwCustomError('custom error')
-      .then(done.fail, err => {
-        expect(err.constructor).toBe(Error)
-        expect(err.message).toBe('custom error')
-      })
-      .then(done)
+  it('should reject with a regular Error if a custom error type was thrown', async () => {
+    let err
+    const message = 'custom error'
+    try {
+      await api.throwCustomError(message)
+    } catch (e) {
+      err = e
+    }
+    expect(() => {throw err}).toThrowError(Error, message)
   })
 
-  it('should reject with a SyntaxError if it was rejected', done => {
-    api.rejectSyntaxError('syntax error')
-      .then(done.fail, err => {
-        expect(err.constructor).toBe(SyntaxError)
-        expect(err.message).toBe('syntax error')
-      })
-      .then(done)
+  it('should reject with a SyntaxError if it was rejected', async () => {
+    let err
+    const message = 'syntax error'
+    try {
+      await api.rejectSyntaxError(message)
+    } catch (e) {
+      err = e
+    }
+    expect(() => {throw err}).toThrowError(Error, message)
   })
 
-  it('should reject with a regular Error if a custom error type was rejected', done => {
-    api.throwCustomError('custom error')
-      .then(done.fail, err => {
-        expect(err.constructor).toBe(Error)
-        expect(err.message).toBe('custom error')
-      })
-      .then(done)
+  it('should reject with a regular Error if a custom error type was rejected', async () => {
+    let err
+    const message = 'custom error'
+    try {
+      await api.throwCustomError(message)
+    } catch (e) {
+      err = e
+    }
+    expect(() => {throw err}).toThrowError(Error, message)
   })
 
-  it('should reject with a thrown value if it is not an error', done => {
-    api.throwMessage('message')
-      .then(done.fail, err => {
-        expect(err).toBe('message')
-      })
-      .then(done)
+  it('should reject with a thrown value if it is not an error', async () => {
+    let err
+    const message = 'message'
+    try {
+      await api.throwMessage(message)
+    } catch (e) {
+      err = e
+    }
+    expect(err).toBe(message)
   })
 
-  it('should reject a rejected value if it is not an error', done => {
-    api.rejectMessage('message')
-      .then(done.fail, err => {
-        expect(err).toBe('message')
-      })
-      .then(done)
+  it('should reject a rejected value if it is not an error', async () => {
+    let err
+    const message = 'message'
+    try {
+      await api.rejectMessage(message)
+    } catch (e) {
+      err = e
+    }
+    expect(err).toBe(message)
   })
 
   afterAll(() => worker.terminate())

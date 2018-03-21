@@ -1,5 +1,4 @@
-import map from 'lodash/map'
-import includes from 'lodash/includes'
+import _ from 'lodash'
 import {serialize as serialize, deserialize as deserialize} from '../argumentsSerializer'
 import {send} from '../messageManager'
 
@@ -8,17 +7,17 @@ describe('argumentsSerializer', () => {
   const literals = [0, [1, 2], {3: 4}]
   describe('serialize', () => {
     it('should turn simple values into value descriptors', () => {
-      expect(serialize(literals)).toEqual({transfer: [], args: map(literals, wrapValue)})
+      expect(serialize(literals)).toEqual({transfer: [], args: _.map(literals, wrapValue)})
     })
     it('should serialize functions into the transfer argument', done => {
       const functions = [x => x, x => x + 1]
       const {args, transfer} = serialize(functions)
       for (const arg of args) {
-        expect(includes(transfer, arg.port)).toBe(true)
+        expect(_.includes(transfer, arg.port)).toBe(true)
       }
-      Promise.all(map(args, arg => send([0], {target: arg.port})))
+      Promise.all(_.map(args, arg => send([0], {target: arg.port})))
         .then(results => {
-          expect(results).toEqual(map(functions, f => ({intent: 'resolve', result: f(0)})))
+          expect(results).toEqual(_.map(functions, f => ({intent: 'resolve', result: f(0)})))
         })
         .then(done)
     })
@@ -26,22 +25,18 @@ describe('argumentsSerializer', () => {
 
   describe('deserialize', () => {
      it('should turn simple value descriptors into simple values', () => {
-         const serialized = map(literals, wrapValue)
+         const serialized = _.map(literals, wrapValue)
          expect(deserialize(serialized, [])).toEqual(literals)
      })
 
-    it('should turn function coded descriptors into functions that call them', done => {
-      const serialized = [{type: 'function', index: 0}]
+    it('should turn function coded descriptors into functions that call them', async () => {
       const {port1, port2} = new MessageChannel()
-      const remote = deserialize(serialized, [port2])
+      const serialized = [{type: 'function', port: port2}]
+      const remote = deserialize(serialized)
       port1.onmessage = ({data}) => {
         data.__port.postMessage({intent: 'resolve', result: data[0] + 1})
       }
-      remote[0](1)
-        .then(res => {
-          expect(res).toBe(2)
-        })
-        .then(done)
+      expect(await remote[0](1)).toBe(2)
     })
   })
 })

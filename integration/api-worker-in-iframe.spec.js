@@ -11,19 +11,14 @@ describe('usage with a web worker inside an iframe', () => {
     })
   }
 
-  it('should receive an API from a worker and call it correctly', done => {
-
-    loadIframe()
-      .then(() => pmrpc.api.request('worker-app', {initiator: 'worker-frame'}))
-      .then(api => api.isWorker())
-      .then(result => {
-        expect(result).toBe(true)
-      })
-      .then(done)
+  it('should receive an API from a worker and call it correctly', async () => {
+    await loadIframe()
+    const api = await pmrpc.api.request('worker-app', {initiator: 'worker-frame'})
+    expect(await api.isWorker()).toBe(true)
   })
 
   afterAll(() => {
-    iframe.worker.terminate()
+    iframe.contentWindow.worker.terminate()
     document.body.removeChild(iframe)
   })
 })

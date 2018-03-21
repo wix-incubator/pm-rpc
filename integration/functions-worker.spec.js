@@ -2,19 +2,13 @@ import * as pmrpc from '../src/pm-rpc/index'
 
 describe('passing functions', () => {
   let worker
-  it('should be able to pass functions as arguments', done => {
+  it('should be able to pass functions as arguments', async () => {
     worker = new Worker('/base/integration/content/functions-worker/worker.js')
-    pmrpc.api.request('worker-functions', {target: worker})
-      .then(api => {
-        function add(a, b) {
-          return a + b
-        }
-        api.reduce(add, 0, [1, 2, 3, 4, 5])
-          .then(res => {
-            expect(res).toBe(15)
-          })
-          .then(done, done.fail)
-      }, done.fail)
+    const api = await pmrpc.api.request('worker-functions', {target: worker})
+    function add(a, b) {
+      return a + b
+    }
+    expect(await api.reduce(add, 0, [1, 2, 3, 4, 5])).toBe(15)
   })
   afterAll(() => worker.terminate())
 })
