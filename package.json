@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.dev.js && webpack --config webpack.prod.js",
-    "unit": "cross-env NODE_ENV=test karma start --single-run",
+    "unit": "#cross-env NODE_ENV=test karma start --single-run",
     "lint": "eslint .",
     "test": "npm run lint && npm run unit && npm run integration",
     "prepublish": "npm run build",
