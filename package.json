@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "test": "npm run lint && npm run unit && npm run integration",
     "prepublish": "npm run build",
-    "integration": "cross-env NODE_ENV=test karma start integration.karma.conf.js",
+    "integration": "#cross-env NODE_ENV=test karma start integration.karma.conf.js",
     "coveralls": "istanbul-combine -r text-lcov -p none coverage/**/*.json | coveralls"
   },
   "files": [
