@@ -7,6 +7,3 @@ after_success:
   - npm run coveralls
 before_install:
   - export CHROME_BIN=chromium-browser
-script:
- - npm install
- - npm run test
