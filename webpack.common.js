@@ -8,7 +8,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     libraryTarget: 'umd',
     library: 'pmrpc',
-    globalObject: 'this'
+    globalObject: 'self'
   },
   devtool: 'source-map',
   module: {
