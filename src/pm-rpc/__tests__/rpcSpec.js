@@ -22,7 +22,7 @@ describe('rpc', () => {
     it('should set the API in the appsRegistrar and wait for requests if there is no app with the ID', () => {
       rpc.set(fakeId, fakeAPI)
       expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, undefined)
-      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function))
+      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), [])
     })
 
     it('should set an onApiCall listener if it was passed', () => {
@@ -37,7 +37,7 @@ describe('rpc', () => {
       rpc.set(fakeId, fakeAPI, {onApiCall})
         expect(appsRegistrar.unregisterApp).toHaveBeenCalledWith(fakeId)
       expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
-      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function))
+      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), [])
     })
 
     describe('handle requests', () => {
