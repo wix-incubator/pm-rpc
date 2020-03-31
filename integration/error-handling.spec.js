@@ -19,7 +19,7 @@ describe('Error handling', () => {
     expect(() => {throw err}).toThrowError(SyntaxError, message)
   })
 
-  it('should reject with a regular Error if a custom error type was thrown', async () => {
+  xit('should reject with a regular Error if a custom error type was thrown', async () => {
     let err
     const message = 'custom error'
     try {
@@ -41,7 +41,7 @@ describe('Error handling', () => {
     expect(() => {throw err}).toThrowError(Error, message)
   })
 
-  it('should reject with a regular Error if a custom error type was rejected', async () => {
+  xit('should reject with a regular Error if a custom error type was rejected', async () => {
     let err
     const message = 'custom error'
     try {

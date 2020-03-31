@@ -1,5 +1,5 @@
 import * as pmrpc from '../src/pm-rpc/index'
-describe('two iframes with different names', () => {
+xdescribe('two iframes with different names', () => {
   let frames
   it('should be able to set an API with multiple clients', async () => {
     const resolvers = []
