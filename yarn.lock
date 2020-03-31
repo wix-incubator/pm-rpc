@@ -3864,10 +3864,10 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-jasmine-core@3.4.0:
-  version "3.4.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jasmine-core/-/jasmine-core-3.4.0.tgz#2a74618e966026530c3518f03e9f845d26473ce3"
-  integrity sha1-KnRhjpZgJlMMNRjwPp+EXSZHPOM=
+jasmine-core@3.1.0:
+  version "3.1.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jasmine-core/-/jasmine-core-3.1.0.tgz#a4785e135d5df65024dfc9224953df585bd2766c"
+  integrity sha1-pHheE11d9lAk38kiSVPfWFvSdmw=
 
 jasmine-core@^3.5.0:
   version "3.5.0"
