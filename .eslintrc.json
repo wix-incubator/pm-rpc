@@ -1,5 +1,5 @@
 {
-  "plugins": ["lodash"],
+  "plugins": ["lodash", "jasmine"],
   "extends": ["wix-editor/node", "plugin:lodash/recommended"],
   "env": {
     "node": true,
@@ -15,12 +15,6 @@
     "lodash/prefer-lodash-method": "off",
     "indent":"off",
     "sort-imports": "off",
-    "no-restricted-globals": [2, {
-      "name": "fdescribe",
-      "message": "Do not commit fdescribe."
-    }, {
-      "name": "fit",
-      "message": "Do not commit fit."
-    }]
+    "jasmine/no-focused-tests": 2
   }
 }

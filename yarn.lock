@@ -2351,6 +2351,11 @@ eslint-config-wix-editor@2.1.0:
   resolved "https://registry.npmjs.org/eslint-config-wix-editor/-/eslint-config-wix-editor-2.1.0.tgz#d87bb57cf27db6ffac9d07ad0bb69b2c0d3c9822"
   integrity sha512-NQ1qUGslje6iv36wKjKpbe2WtWwKugh3kWLG56fYQd1l9J3wKiWlI8iCBUUD5uqwQp9jEA+tKObUlIbgr7KYJA==
 
+eslint-plugin-jasmine@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jasmine/-/eslint-plugin-jasmine-4.1.0.tgz#4f6d41b1a8622348c97559cbcd29badffa74dbfa"
+  integrity sha512-Vfuk2Sm1ULR7MqGjVIOOEdQWyoFBfSwvwUeo9MrajVGJB3C24c9Mmj1Cgf8Qwmf3aS2bezPt1sckpKXWpd74Dw==
+
 eslint-plugin-lodash@2.7.0:
   version "2.7.0"
   resolved "https://registry.npmjs.org/eslint-plugin-lodash/-/eslint-plugin-lodash-2.7.0.tgz#66cdc1070b7c9d4b749368b54820886380a14c35"
