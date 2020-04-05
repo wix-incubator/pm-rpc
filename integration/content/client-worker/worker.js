@@ -5,9 +5,14 @@ onmessage = function (event) {
         pmrpc.api.request('api-for-worker')
             .then(api => {
                 if (api.add) {
-                    api.add(2, 3).then(result => {
+                    api.add(2, 3)
+                    .then(result => {
                         postMessage({message: 'api received', result})
+                    }).catch(e => {
+                        postMessage({message: 'broken api', result: e})
                     })
+                } else {
+                    postMessage({message: 'no expected method on api'})
                 }
             })
     }
