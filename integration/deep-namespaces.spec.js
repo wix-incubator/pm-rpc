@@ -1,5 +1,5 @@
 import * as pmrpc from '../src/pm-rpc/index'
-fdescribe('deep namespaces', () => {
+describe('deep namespaces', () => {
   let worker
 
   beforeAll(() => {

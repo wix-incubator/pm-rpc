@@ -1,7 +1,7 @@
 import * as pmrpc from '../src/pm-rpc/index'
 import {waitForIframeLoaded} from './util/util'
 
-describe('web worker inside an iframe', () => {
+xdescribe('web worker inside an iframe', () => {
   let iframe
   beforeAll(async () => {
     iframe = document.createElement('iframe')

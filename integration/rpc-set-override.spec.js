@@ -1,7 +1,7 @@
 import * as pmrpc from '../src/pm-rpc/index'
 import noop from 'lodash/noop'
 import identity from 'lodash/identity'
-describe('rpc.set override', () => {
+xdescribe('rpc.set override', () => {
   it('should set new api when the name is the same. should unregister the old one and register the new one', async () => {
     const name = 'rpc-reset'
     const func1 = noop
