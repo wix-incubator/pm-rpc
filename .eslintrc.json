@@ -1,5 +1,5 @@
 {
-  "plugins": ["lodash"],
+  "plugins": ["lodash", "jasmine"],
   "extends": ["wix-editor/node", "plugin:lodash/recommended"],
   "env": {
     "node": true,
@@ -11,6 +11,7 @@
   "rules": {
     "semi": ["error", "never"],
     "no-confusing-arrow": "off",
-    "lodash/path-style": ["error", "as-needed"]
+    "lodash/path-style": ["error", "as-needed"],
+    "jasmine/no-focused-tests": 2
   }
 }

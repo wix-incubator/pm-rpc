@@ -53,12 +53,12 @@ const onMessage = ({data: {appId, intent, call, args, __port}, ports: messagePor
   }
 }
 
-export const set = (appId, app, {onApiCall} = {}) => {
+export const set = (appId, app, {onApiCall} = {}, workers = []) => {
   if (appsRegistrar.hasApp(appId)) {
     appsRegistrar.unregisterApp(appId)
   }
   appsRegistrar.registerApp(appId, app, onApiCall)
-  messageHandler.addSingleHandler(onMessage)
+  messageHandler.addSingleHandler(onMessage, workers)
 
 }
 
