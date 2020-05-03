@@ -33,6 +33,7 @@
     "eslint": "3.17.1",
     "eslint-config-wix-editor": "0.2.3",
     "eslint-plugin-lodash": "2.3.5",
+    "eslint-plugin-jasmine": "^4.1.0",
     "istanbul": "0.4.5",
     "istanbul-combine": "0.3.0",
     "jasmine-core": "^2.3.4",
