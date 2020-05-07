@@ -10,9 +10,10 @@ describe('rpc', () => {
   describe('set API', () => {
 
     beforeEach(() => {
+      spyOn(self, 'addEventListener')
       spyOn(appsRegistrar, 'registerApp')
       spyOn(appsRegistrar, 'unregisterApp')
-      spyOn(messageHandler, 'addSingleHandler')
+      spyOn(messageHandler, 'addSingleHandler').and.callThrough()
     })
 
     const fakeId = 'someID'
@@ -39,6 +40,57 @@ describe('rpc', () => {
         expect(appsRegistrar.unregisterApp).toHaveBeenCalledWith(fakeId)
       expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
       expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), [])
+    })
+
+    describe('messageHandler', () => {
+      const fakeId_2 = 'someID_2'
+      const fakeAPI_2 = {
+        identity: x => x
+      }
+
+      class mockWorker {
+        constructor(stringUrl) {
+          this.url = stringUrl
+          this.addEventListener = jasmine.createSpy('workerAddEventListener')
+        }
+      }
+
+      beforeEach(() => {
+        global.Worker = mockWorker
+        messageHandler.removeSingleHandler()
+      })
+
+      it('should call to self.addEventListener', () => {
+        rpc.set(fakeId, fakeAPI)
+        expect(self.addEventListener).toHaveBeenCalledTimes(1)
+      })
+
+      it('should NOT call to self.addEventListener if there is already defined listener ', () => {
+        rpc.set(fakeId, fakeAPI)
+        rpc.set(fakeId_2, fakeAPI_2)
+        expect(self.addEventListener).toHaveBeenCalledTimes(1)
+      })
+
+      it('should add event listener on each given worker', () => {
+        const worker_1 = new Worker('someUrl')
+        const worker_2 = new Worker('someUrl')
+
+        rpc.set(fakeId, fakeAPI, {}, [worker_1, worker_2])
+        expect(worker_1.addEventListener).toHaveBeenCalledTimes(1)
+        expect(worker_2.addEventListener).toHaveBeenCalledTimes(1)
+      })
+
+      it('should call to add event listener on each given worker on each rpc set', () => {
+        const worker_1 = new Worker('someUrl')
+        const worker_2 = new Worker('someUrl')
+        const worker_3 = new Worker('someUrl')
+
+        rpc.set(fakeId, fakeAPI, {}, [worker_1, worker_2])
+        rpc.set(fakeId_2, fakeAPI_2, {}, [worker_3])
+        expect(worker_1.addEventListener).toHaveBeenCalledTimes(1)
+        expect(worker_2.addEventListener).toHaveBeenCalledTimes(1)
+        expect(worker_3.addEventListener).toHaveBeenCalledTimes(1)
+      })
     })
 
     describe('handle requests', () => {

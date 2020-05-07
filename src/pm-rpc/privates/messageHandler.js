@@ -5,9 +5,10 @@ export const addSingleHandler = (handler, workers) => {
   if (!isListening) {
     isListening = true
     self.addEventListener('message', handler)
-    if (workers) {
-      forEach(workers, worker => worker.addEventListener('message', handler))
-    }
+  }
+
+  if (workers) {
+    forEach(workers, worker => worker.addEventListener('message', handler))
   }
 }
 
