@@ -9,6 +9,9 @@ import {serialize as serializeError} from './privates/errorSerializer'
 
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
+    case Boolean(target instanceof MessagePort): {
+      return {target}
+    }
     case isWorker():
       return {target: self, targetOrigin: '*'}
     case typeof parent !== 'undefined' && target === parent:
