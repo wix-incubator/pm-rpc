@@ -6,6 +6,7 @@
     "url": "https://github.com/wix/pm-rpc.git"
   },
   "scripts": {
+    "start": "yarn build && http-server build --port 9388 --cors ",
     "build": "webpack --config webpack.dev.js && webpack --config webpack.prod.js",
     "unit": "cross-env NODE_ENV=test karma start --single-run",
     "lint": "eslint .",
@@ -29,8 +30,9 @@
     "cross-env": "5.1.4",
     "eslint": "4.19.0",
     "eslint-config-wix-editor": "2.1.0",
-    "eslint-plugin-lodash": "2.7.0",
     "eslint-plugin-jasmine": "^4.1.0",
+    "eslint-plugin-lodash": "2.7.0",
+    "http-server": "^0.12.3",
     "istanbul": "0.4.5",
     "istanbul-combine": "0.3.0",
     "jasmine-core": "3.5.0",

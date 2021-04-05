@@ -62,6 +62,10 @@ export const set = (appId, app, {onApiCall} = {}, workers = []) => {
   messageHandler.addSingleHandler(onMessage, workers)
 }
 
+export const addApiConsumer = (target) => {
+  target.addEventListener('message', onMessage)
+}
+
 export const request = (appId, targetDef = {}) => {
   const targetInfo = getTargetInfoFromDef(targetDef)
   return send({intent: Intents.REQUEST_API, appId}, targetInfo)
