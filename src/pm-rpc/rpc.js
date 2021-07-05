@@ -9,10 +9,8 @@ import {serialize as serializeError} from './privates/errorSerializer'
 
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
-    case isWorker():
-      return {target: self, targetOrigin: '*'}
-    case typeof parent !== 'undefined' && target === parent:
-      return {target: parent, targetOrigin: '*'}
+    case target instanceof MessagePort:
+      return {target}
     case target instanceof Worker:
       return {target}
     case Boolean(target):
@@ -20,6 +18,10 @@ const getTargetInfoFromDef = ({target, initiator}) => {
         return {target: target.contentWindow, targetOrigin: target.src}
       }
       return {target, targetOrigin: '*'}
+    case isWorker():
+      return {target: self, targetOrigin: '*'}
+    case typeof parent !== 'undefined' && target === parent:
+      return {target: parent, targetOrigin: '*'}
     case Boolean(initiator):
       const element = getChildFrameById(initiator)
       return {target: element.contentWindow, targetOrigin: element.src}
