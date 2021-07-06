@@ -11,8 +11,7 @@
     "lint": "eslint .",
     "test": "npm run lint && npm run unit && npm run integration",
     "prepublish": "npm run build",
-    "integration": "cross-env NODE_ENV=test karma start integration.karma.conf.js",
-    "coveralls": "istanbul-combine -r text-lcov -p none coverage/**/*.json | coveralls"
+    "integration": "cross-env NODE_ENV=test karma start integration.karma.conf.js"
   },
   "files": [
     "build"
@@ -23,21 +22,16 @@
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-loader": "7.1.4",
-    "babel-plugin-istanbul": "4.1.5",
     "babel-preset-env": "1.6.1",
-    "coveralls": "3.0.0",
     "cross-env": "5.1.4",
     "eslint": "4.19.0",
     "eslint-config-wix-editor": "2.1.0",
-    "eslint-plugin-lodash": "2.7.0",
     "eslint-plugin-jasmine": "^4.1.0",
-    "istanbul": "0.4.5",
-    "istanbul-combine": "0.3.0",
+    "eslint-plugin-lodash": "2.7.0",
     "jasmine-core": "3.5.0",
     "karma": "4.4.1",
     "karma-chrome-launcher": "2.2.0",
     "karma-cli": "2.0.0",
-    "karma-coverage": "1.1.1",
     "karma-firefox-launcher": "1.1.0",
     "karma-jasmine": "3.1.1",
     "karma-sourcemap-loader": "^0.3.5",

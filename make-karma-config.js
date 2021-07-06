@@ -29,13 +29,10 @@ module.exports = function (options) {
         ]
       }
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress'],
     webpackMiddleware: {
       noInfo: true
     },
-    colors: true,
-    coverageReporter: {
-      type: 'json'
-    }
+    colors: true
   }, options)
 }
