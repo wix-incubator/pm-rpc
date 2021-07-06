@@ -143,5 +143,5 @@ rpc.api.request(
 [deps-url]: https://david-dm.org/wix/pm-rpc
 [deps-image]: https://img.shields.io/david/dev/wix/pm-rpc.svg?style=flat-square
 
-[build-image]: https://travis-ci.org/wix/pm-rpc.svg?branch=master
-[build-url]: https://travis-ci.org/wix/pm-rpc
+[build-image]: https://github.com/wix/pm-rpc/actions/workflows/node.js.yml/badge.svg
+[build-url]: https://github.com/wix/pm-rpc/actions/workflows/node.js.yml
