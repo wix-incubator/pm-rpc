@@ -14,7 +14,13 @@ async function sendWithResolve(message, ...rest) {
 
   message.__port.postMessage({intent: 'resolve', result: 'b206275b931a'})
 
-  return sendPromise
+  // i could't get `send` to resolve even with `message.__port.postMessage`, so i'm doing `setTimeout` instead
+  // (errors thrown by `send` still bubble up to here)
+  // https://github.com/wix/pm-rpc/pull/25#discussion_r663927282
+  return Promise.race([
+    sendPromise,
+    new Promise(r => setTimeout(r, 100))
+  ])
 }
 
 describe('messageManager', () => {
