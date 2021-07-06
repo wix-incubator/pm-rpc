@@ -3,7 +3,7 @@ const merge = require('lodash/merge')
 
 module.exports = function (options) {
   return merge({
-    browsers: [process.env.TRAVIS ? 'chrome_travis_ci' : 'ChromeHeadless'],
+    browsers: ['ChromeHeadless'],
     singleRun: true,
     frameworks: ['jasmine'],
     webpack: {
@@ -29,19 +29,10 @@ module.exports = function (options) {
         ]
       }
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress'],
     webpackMiddleware: {
       noInfo: true
     },
-    colors: true,
-    coverageReporter: {
-      type: 'json'
-    },
-    customLaunchers: {
-      chrome_travis_ci: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
-      }
-    }
+    colors: true
   }, options)
 }

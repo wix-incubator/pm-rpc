@@ -1,7 +1,6 @@
-node_modules/*
-.idea/*
-build/*
-coverage/*
+node_modules/
+.idea/
+build/
 
 .DS_Store
 *.log

@@ -1,9 +1,0 @@
-services:
-  - xvfb
-language: node_js
-node_js:
-  - "10"
-after_success:
-  - npm run coveralls
-before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
