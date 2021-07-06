@@ -11,7 +11,7 @@ const options = require('./make-karma-config')({
     dir: 'coverage/integration'
   },
   useIframe: false,
-  browsers: [process.env.TRAVIS ? 'chrome_travis_ci' : 'ChromeHeadless', 'Firefox'],
+  browsers: [process.env.TRAVIS ? 'chrome_travis_ci' : 'ChromeHeadless', 'FirefoxHeadless'],
   concurrency: 1
 })
 
