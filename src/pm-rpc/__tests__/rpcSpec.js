@@ -23,7 +23,7 @@ describe('rpc', () => {
     it('should set the API in the appsRegistrar and wait for requests if there is no app with the ID', () => {
       rpc.set(fakeId, fakeAPI)
       expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, undefined)
-      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), [])
+      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), undefined)
     })
 
     it('should set an onApiCall listener if it was passed', () => {
@@ -38,7 +38,7 @@ describe('rpc', () => {
       rpc.set(fakeId, fakeAPI, {onApiCall})
         expect(appsRegistrar.unregisterApp).toHaveBeenCalledWith(fakeId)
       expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
-      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), [])
+      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), undefined)
     })
 
     describe('messageHandler', () => {
@@ -74,7 +74,7 @@ describe('rpc', () => {
         const worker_1 = new Worker('someUrl')
         const worker_2 = new Worker('someUrl')
 
-        rpc.set(fakeId, fakeAPI, {}, [worker_1, worker_2])
+        rpc.set(fakeId, fakeAPI, {workers: [worker_1, worker_2]})
         expect(worker_1.addEventListener).toHaveBeenCalledTimes(1)
         expect(worker_2.addEventListener).toHaveBeenCalledTimes(1)
       })
@@ -84,8 +84,8 @@ describe('rpc', () => {
         const worker_2 = new Worker('someUrl')
         const worker_3 = new Worker('someUrl')
 
-        rpc.set(fakeId, fakeAPI, {}, [worker_1, worker_2])
-        rpc.set(fakeId_2, fakeAPI_2, {}, [worker_3])
+        rpc.set(fakeId, fakeAPI, {workers: [worker_1, worker_2]})
+        rpc.set(fakeId_2, fakeAPI_2, {workers: [worker_3]})
         expect(worker_1.addEventListener).toHaveBeenCalledTimes(1)
         expect(worker_2.addEventListener).toHaveBeenCalledTimes(1)
         expect(worker_3.addEventListener).toHaveBeenCalledTimes(1)

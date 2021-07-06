@@ -60,7 +60,7 @@ The caller code will look as follow:
 pmrpc.api.request('functions', {target: iframe.contentWindow})
   .then(api => {
     const filterOdd = arr => arr.filter(x => x % 2)
-    const getNumbers = () => return [1, 2, 3, 4, 5, 6]
+    const getNumbers = () => [1, 2, 3, 4, 5, 6]
 
     api.maxOdd(getNumbers, filterOdd)
       .then(result => {
@@ -99,6 +99,29 @@ rpc.api.set(appId, api, {onApiCall: function (data) {
 }});
 ```
 
+#### Using with WebWorker 
+
+When setting an API, you can specify workers that may consume requested API. Inside worker, you can request 
+
+```javascript
+const api = {
+  asyncFunc(...args) {
+    return performSomeAjaxRequest(args)
+  }
+}
+
+const worker = new Worker('dowork.js')
+
+rpc.api.set('appId', api, {workers: [worker]});
+```
+
+Inside web worker: 
+
+```javascript
+rpc.api.request('appId')
+  .then(api => api.asyncFunc())
+```
+
 ### API usage:
 To use an API, the caller must **request** it from the callee.
 The API is then returned in a promise, and all API calls return promises.
@@ -119,21 +142,6 @@ rpc.api.request(
 });
 ```
 
-### Using with `initiator`
-Instead of requesting an API from a `target`, you can pass the ID of an `iframe` as `initiator`
-
-e.g.:
-
-```javascript
-import rpc from 'pm-rpc';
-rpc.api.request(
-  appId,
-  {
-    initiator: 'id-of-iframe'
-  }
-)
-    .then(/* ... Use the API somehow*/)
-```
 [npm-url]: https://npmjs.org/package/pm-rpc
 [npm-image]: http://img.shields.io/npm/v/pm-rpc.svg?style=flat-square
 

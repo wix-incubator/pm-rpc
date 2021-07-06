@@ -1,12 +1,11 @@
 import * as pmrpc from '../src/pm-rpc/index'
-import noop from 'lodash/noop'
 
 describe('web worker', () => {
     let workerInstance
 
     it('should set API in main thread and request it in worker', done => {
         workerInstance = new Worker('/base/integration/content/client-worker/worker.js')
-        pmrpc.api.set('api-for-worker', {add: (a, b) => a + b}, noop, [workerInstance])
+        pmrpc.api.set('api-for-worker', {add: (a, b) => a + b}, {workers: [workerInstance]})
 
         workerInstance.onmessage = event => {
             switch (event.data.message) {

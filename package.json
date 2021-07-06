@@ -14,9 +14,11 @@
     "integration": "cross-env NODE_ENV=test karma start integration.karma.conf.js"
   },
   "files": [
-    "build"
+    "build",
+    "types"
   ],
   "main": "build/pm-rpc.min.js",
+  "types": "types/index.d.ts",
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
