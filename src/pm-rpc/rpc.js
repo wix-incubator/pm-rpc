@@ -13,15 +13,15 @@ const getTargetInfoFromDef = ({target, initiator}) => {
       return {target}
     case target instanceof Worker:
       return {target}
+    case typeof parent !== 'undefined' && target === parent:
+      return {target: parent, targetOrigin: '*'}
     case Boolean(target):
-      if (target.contentWindow) {
+      if (target.contentWindow) { // target.contentWindow can throw error if (frame has no permission) {
         return {target: target.contentWindow, targetOrigin: target.src}
       }
       return {target, targetOrigin: '*'}
     case isWorker():
       return {target: self, targetOrigin: '*'}
-    case typeof parent !== 'undefined' && target === parent:
-      return {target: parent, targetOrigin: '*'}
     case Boolean(initiator):
       const element = getChildFrameById(initiator)
       return {target: element.contentWindow, targetOrigin: element.src}
