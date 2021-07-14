@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1]
+
+- Fix `ReferenceError` in Safari inside workers. 
+
+  When running pm-rpc in worker error `ReferenceError: Can't find variable: Worker` was thrown.
+  Caused by [Bug:Support constructing nested workers](https://bugs.webkit.org/show_bug.cgi?id=25212)
+
 ## [3.0.0]
 
 Added typings
