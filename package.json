@@ -10,7 +10,7 @@
     "unit": "cross-env NODE_ENV=test karma start --single-run",
     "lint": "eslint .",
     "test": "npm run lint && npm run unit && npm run integration",
-    "prepublish": "npm run build && npm run test",
+    "prepare": "npm run build",
     "integration": "cross-env NODE_ENV=test karma start integration.karma.conf.js"
   },
   "files": [
