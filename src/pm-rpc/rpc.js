@@ -9,9 +9,11 @@ import {serialize as serializeError} from './privates/errorSerializer'
 
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
-    case target instanceof MessagePort:
+    // In case of MessagePort is undefined
+    case typeof MessagePort !== 'undefined' && target instanceof MessagePort:
       return {target}
-    case target instanceof Worker:
+    // Worker is undefined in Safari in the code that is executed inside a web worker
+    case typeof Worker !== 'undefined' && target instanceof Worker:
       return {target}
     case typeof parent !== 'undefined' && target === parent:
       return {target: parent, targetOrigin: '*'}
