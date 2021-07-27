@@ -304,6 +304,13 @@ describe('rpc', () => {
         expect(() => rpc.request(fakeId)).toThrowError('Invalid target')
       })
     })
+
+    it('should make sure that single handler is added when requesting API', () => {
+      spyOn(windowModule, 'isWorker').and.returnValue(true)
+      spyOn(messageHandler, 'addSingleHandler')
+      rpc.request(fakeId)
+      expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function))
+    })
   })
 
   describe('unset API', () => {
