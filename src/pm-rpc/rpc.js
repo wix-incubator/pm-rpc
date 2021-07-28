@@ -67,6 +67,8 @@ export const set = (appId, app, {onApiCall, workers} = {}, workersDeprecated) =>
 }
 
 export const request = (appId, targetDef = {}) => {
+  messageHandler.addSingleHandler(onMessage)
+
   const targetInfo = getTargetInfoFromDef(targetDef)
   return send({intent: Intents.REQUEST_API, appId}, targetInfo)
     .then(description => description ?
