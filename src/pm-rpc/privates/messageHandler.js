@@ -2,6 +2,7 @@ let isListening = false
 export const addSingleHandler = (handler, workers) => {
   if (!isListening) {
     isListening = true
+    // todo: consider having this subscription long-living (now we subscribe on the first `set`/`request` and unsubscribe on the last `unset`
     self.addEventListener('message', handler)
   }
 
