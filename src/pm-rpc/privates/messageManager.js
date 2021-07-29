@@ -32,6 +32,7 @@ export const send = (message, {target, targetOrigin}, transfer = []) => new Prom
     */
 
     if (e && e.name === 'DataCloneError') {
+      const clonedMessage = cloneDeep(message)
       /**
        * This part is needed as lodash.cloneDeep on array doesnt clone additional object properties 
        * For example -  
@@ -40,11 +41,7 @@ export const send = (message, {target, targetOrigin}, transfer = []) => new Prom
        * const b = cloneDeep(arr)
        * arr.port === undefined.
        */
-      const oldPort = message.__port
-      const clonedMessage = cloneDeep(message)
-      if (oldPort) {
-        clonedMessage.__port = oldPort
-      }
+      clonedMessage.__port = port2
       postMessage(target, clonedMessage, targetOrigin, [port2, ...transfer])
     } else {
       throw e

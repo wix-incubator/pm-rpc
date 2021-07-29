@@ -35,7 +35,7 @@ describe('messageManager', () => {
 
     it('should call `target.postMessage` when message is an array', async () => {
       const target = createTarget()
-      const message = [1]
+      const message = {a: 'e45cc3a216d8'}
       await sendWithResolve(message, {target})
 
       expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
