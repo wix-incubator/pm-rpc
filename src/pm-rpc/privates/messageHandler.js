@@ -1,24 +1,26 @@
 import isFunction from 'lodash/isFunction'
 
 let isListening = false
+
+const registerListener = (obj, handler) => {
+  if (isFunction(obj.addEventListener)) {
+    obj.addEventListener('message', handler)
+  } else {
+    obj.onmessage = handler
+  }
+}
+
 export const addSingleHandler = (handler, workers) => {
+  console.log('amit: addSingleHandler')
   if (!isListening) {
     isListening = true
     // todo: consider having this subscription long-living (now we subscribe on the first `set`/`request` and unsubscribe on the last `unset`
-    if (isFunction(self.addEventListener)) {
-      self.addEventListener('message', handler)
-    } else {
-      self.onmessage = handler
-    }
+    registerListener(self, handler)
   }
 
   if (workers) {
       workers.forEach(worker => {
-        if (isFunction(worker.addEventListener)) {
-          worker.addEventListener('message', handler)
-        } else {
-          worker.onmessage = handler
-        }
+        registerListener(worker, handler)
       })
   }
 }
