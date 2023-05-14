@@ -2,6 +2,20 @@ import _ from 'lodash'
 import {serialize as serialize, deserialize as deserialize} from '../argumentsSerializer'
 import {send} from '../messageManager'
 
+class MockWorker {
+  constructor(stringUrl) {
+    this.url = stringUrl
+    this.addEventListener = jasmine.createSpy('workerAddEventListener')
+  }
+}
+beforeEach(() => {
+  global.Worker = MockWorker //eslint-disable-line
+})
+
+afterEach(() => {
+  delete global.Worker //eslint-disable-line
+})
+
 describe('argumentsSerializer', () => {
   const wrapValue = value => ({type: 'value', value})
   const literals = [0, [1, 2], {3: 4}]
