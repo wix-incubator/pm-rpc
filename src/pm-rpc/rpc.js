@@ -7,6 +7,9 @@ import {send, sendResponse} from './privates/messageManager'
 import * as messageHandler from './privates/messageHandler'
 import {serialize as serializeError} from './privates/errorSerializer'
 
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const MessagePort = typeof MessagePort !== 'undefined' ? MessagePort : require('worker_threads').MessagePort
+
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
     // In case of MessagePort is undefined
@@ -32,7 +35,8 @@ const getTargetInfoFromDef = ({target, initiator}) => {
   }
 }
 
-const onMessage = ({data: {appId, intent, call, args, __port: port}}) => {
+const onMessage = event => {
+  const {data: {appId, intent, call, args, __port: port}} = event
   switch (intent) {
     case Intents.REQUEST_API:
       const app = appsRegistrar.getAppById(appId)
@@ -78,7 +82,5 @@ export const request = (appId, targetDef = {}) => {
 
 export const unset = appId => {
   appsRegistrar.unregisterApp(appId)
-  if (appsRegistrar.isEmpty()) {
-    messageHandler.removeSingleHandler(onMessage)
-  }
+  messageHandler.removeSingleHandler(onMessage)
 }

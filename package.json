@@ -1,6 +1,6 @@
 {
   "name": "pm-rpc",
-  "version": "3.0.3",
+  "version": "3.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/wix/pm-rpc.git"
@@ -9,7 +9,8 @@
     "build": "tsc && webpack --config webpack.dev.js && webpack --config webpack.prod.js",
     "unit": "cross-env NODE_ENV=test karma start --single-run",
     "lint": "eslint .",
-    "test": "npm run lint && npm run unit && npm run integration",
+    "test": "npm run lint && npm run unit && npm run integration && npm run test:node",
+    "test:node": "node ./integration/node/node-worker-threads.js",
     "prepare": "npm run build",
     "integration": "cross-env NODE_ENV=test karma start integration.karma.conf.js"
   },

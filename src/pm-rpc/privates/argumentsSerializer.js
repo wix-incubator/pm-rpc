@@ -10,6 +10,10 @@ export const serialize = arr => arr.reduce(({args, transfer}, arg) => {
       const port = data.__port
       Promise.resolve(arg(...data))
         .then(sendResponse(port, Intents.RESOLVE), sendResponse(port, Intents.REJECT))
+        .finally(() => {
+          port1.close()
+          port2.close()
+        })
     }
     const index = transfer.length
     args.push({
