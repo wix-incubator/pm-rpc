@@ -2,15 +2,21 @@ import {isWorker} from './windowModule'
 import cloneDeep from 'lodash/cloneDeep'
 
 // eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const Worker = typeof Worker !== 'undefined' ? Worker : require('worker_threads').Worker
+const Worker = typeof globalThis.Worker !== 'undefined' ? globalThis.Worker : require('worker_threads').Worker
 // eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const MessagePort = typeof MessagePort !== 'undefined' ? MessagePort : require('worker_threads').MessagePort
+const MessagePort = typeof globalThis.MessagePort !== 'undefined' ? globalThis.MessagePort : require('worker_threads').MessagePort
 // eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const MessageChannel = typeof MessageChannel !== 'undefined' ? MessageChannel : require('worker_threads').MessageChannel
+const MessageChannel = typeof globalThis.MessageChannel !== 'undefined' ? globalThis.MessageChannel : require('worker_threads').MessageChannel
 
 function postMessage(target, message, targetOrigin, transfer) {
   if (isWorker() || target instanceof Worker || target instanceof MessagePort) {
-    target.postMessage(message, transfer)
+    try {
+      target.postMessage(message, transfer)
+    } catch (e) {
+    // eslint-disable-next-line no-debugger
+      debugger
+      throw e
+    }
   } else {
     target.postMessage(message, targetOrigin, transfer)
   }
@@ -20,11 +26,19 @@ export const send = (message, {target, targetOrigin}, transfer = []) => new Prom
   const {port1, port2} = new MessageChannel()
   const handler = ({data}) => {
     resolve(data)
-    port1.removeEventListener('message', handler)
+    if (isWorker()) {
+      port1.onmessage = null
+    } else {
+      port1.removeEventListener('message', handler)
+    }
     port1.close()
     port2.close()
   }
-  port1.addEventListener('message', handler)
+  if (isWorker()) {
+    port1.onmessage = handler
+  } else {
+    port1.addEventListener('message', handler)
+  }
   message.__port = port2
 
   try {

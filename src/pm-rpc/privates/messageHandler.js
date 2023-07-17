@@ -26,6 +26,8 @@ export const addSingleHandler = (handler, workers) => {
     // todo: consider having this subscription long-living (now we subscribe on the first `set`/`request` and unsubscribe on the last `unset`
     if (typeof self !== 'undefined') {
       registerListener(self, handler)
+    } else if (typeof window !== 'undefined') {
+      window.removeEventListener('message', handler)
     } else {
       // eslint-disable-next-line no-undef
       const workerThreads = require('worker_threads')
@@ -38,17 +40,19 @@ export const addSingleHandler = (handler, workers) => {
       }
     }
   }
-
+  
   if (workers) {
-      workers.forEach(worker => {
-        registerListener(worker, handler)
-      })
+    workers.forEach(worker => {
+      registerListener(worker, handler)
+    })
   }
 }
 
 export const removeSingleHandler = handler => {
   if (typeof self !== 'undefined') {
     self.removeEventListener('message', handler)
+  } else if (typeof window !== 'undefined') {
+    window.removeEventListener('message', handler)
   }
 
   const objs = objsByEventListenerHandler.get(handler) || []

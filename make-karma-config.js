@@ -9,6 +9,9 @@ module.exports = function (options) {
     webpack: {
       devtool: 'inline-source-map',
       mode: 'development',
+      externals: {
+        worker_threads: 'worker_threads'
+      },
       module: {
         rules: [
           {

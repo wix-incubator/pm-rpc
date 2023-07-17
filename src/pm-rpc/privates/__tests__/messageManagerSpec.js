@@ -23,54 +23,30 @@ async function sendWithResolve(message, ...rest) {
   ])
 }
 
-class MockWebWorker {
-  constructor(stringUrl) {
-    this.url = stringUrl
-    this.addEventListener = jasmine.createSpy('workerAddEventListener')
-  }
-}
+describe('messageManager', () => {
+  describe('send', () => {
+    it('should call `target.postMessage`', async () => {
+      const target = createTarget()
+      const message = {a: 'e45cc3a216d8'}
+      await sendWithResolve(message, {target})
 
-class MockNodeWorker {
-  constructor(stringUrl) {
-    this.url = stringUrl
-  }
-}
-[['WebWorker', MockWebWorker], ['NodeWorker', MockNodeWorker]].forEach(([name, MockWorker]) => {
-  describe(`with ${name}`, () => {
-    beforeEach(() => {
-      global.Worker = MockWorker //eslint-disable-line
-    })
-    
-    afterEach(() => {
-      delete global.Worker //eslint-disable-line
+      expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
     })
 
-    describe('messageManager', () => {
-      describe('send', () => {
-        it('should call `target.postMessage`', async () => {
-          const target = createTarget()
-          const message = {a: 'e45cc3a216d8'}
-          await sendWithResolve(message, {target})
-    
-          expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
-        })
-    
-        it('should call `target.postMessage` when message is an array', async () => {
-          const target = createTarget()
-          const message = {a: 'e45cc3a216d8'}
-          await sendWithResolve(message, {target})
-    
-          expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
-        })
-    
-        it('should not fail `target.postMessage` for messages with Proxy', async () => {
-          const target = createTarget()
-          const message = {a: '34de4cb70fd9', c: new Proxy({d: 0}, {get: _.constant(1)})}
-          await sendWithResolve(message, {target})
-    
-          expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
-        })
-      })
+    it('should call `target.postMessage` when message is an array', async () => {
+      const target = createTarget()
+      const message = {a: 'e45cc3a216d8'}
+      await sendWithResolve(message, {target})
+
+      expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
+    })
+
+    it('should not fail `target.postMessage` for messages with Proxy', async () => {
+      const target = createTarget()
+      const message = {a: '34de4cb70fd9', c: new Proxy({d: 0}, {get: _.constant(1)})}
+      await sendWithResolve(message, {target})
+
+      expect(target.postMessage).toHaveBeenCalledWith(message, [jasmine.any(MessagePort)])
     })
   })
 })
