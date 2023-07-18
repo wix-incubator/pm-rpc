@@ -9,6 +9,8 @@ import {serialize as serializeError} from './privates/errorSerializer'
 
 // eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
 const MessagePort = typeof globalThis.MessagePort !== 'undefined' ? globalThis.MessagePort : require('worker_threads').MessagePort
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const Worker = typeof globalThis.Worker !== 'undefined' ? globalThis.Worker : require('worker_threads').Worker
 
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {

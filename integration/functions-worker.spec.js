@@ -1,6 +1,6 @@
 import * as pmrpc from '../src/pm-rpc/index'
 
-describe('passing functions', () => {
+describe('passing functions worker', () => {
   let worker
   it('should be able to pass functions as arguments', async () => {
     worker = new Worker('/base/integration/content/functions-worker/worker.js')

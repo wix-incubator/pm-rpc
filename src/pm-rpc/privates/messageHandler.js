@@ -17,6 +17,8 @@ const registerListener = (obj, handler) => {
     obj.addEventListener('message', handler)
   } else if (isFunction(obj.on)) {
     obj.on('message', data => handler({data}))
+  } else {
+    obj.onmessage = handler
   }
 }
 
