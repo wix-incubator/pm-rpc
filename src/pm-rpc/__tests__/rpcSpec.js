@@ -172,7 +172,7 @@ describe('rpc', () => {
 
     describe('when requester is iframe', () => {
       beforeEach(() => {
-        spyOn(windowModule, 'isWorker').and.returnValue(false)
+        spyOn(windowModule, 'isWebWorker').and.returnValue(false)
       })
       it('should throw if target is not defined', () => {
         expect(() => rpc.request(fakeId)).toThrowError('Invalid target')
@@ -213,7 +213,7 @@ describe('rpc', () => {
     })
     describe('when requester is worker', () => {
       beforeEach(() => {
-        spyOn(windowModule, 'isWorker').and.returnValue(true)
+        spyOn(windowModule, 'isWebWorker').and.returnValue(true)
       })
 
       it('should send a channel message to self', () => {
@@ -307,7 +307,7 @@ describe('rpc', () => {
     })
 
     it('should make sure that single handler is added when requesting API', () => {
-      spyOn(windowModule, 'isWorker').and.returnValue(true)
+      spyOn(windowModule, 'isWebWorker').and.returnValue(true)
       spyOn(messageHandler, 'addSingleHandler')
       rpc.request(fakeId)
       expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function))
