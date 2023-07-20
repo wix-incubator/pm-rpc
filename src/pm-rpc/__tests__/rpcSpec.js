@@ -10,6 +10,13 @@ const fakeId_2 = 'someID_2'
 const fakeAPI_2 = {
   identity: x => x
 }
+class MockWebWorker {
+  constructor(stringUrl) {
+    this.url = stringUrl
+    this.addEventListener = jasmine.createSpy('workerAddEventListener')
+  }
+}
+global.Worker = MockWebWorker //eslint-disable-line
 
 describe('rpc', () => {
   beforeEach(() => {

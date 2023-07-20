@@ -1,6 +1,6 @@
 import get from 'lodash/get'
 import * as appsRegistrar from './privates/appsRegistrar'
-import {isWorker, getChildFrameById} from './privates/windowModule'
+import {isWebWorker, getChildFrameById} from './privates/windowModule'
 import Intents from './privates/Intents'
 import {buildApiFromDescription, getDescription, invokeApiFunction} from './privates/apiManager'
 import {send, sendResponse} from './privates/messageManager'
@@ -27,7 +27,7 @@ const getTargetInfoFromDef = ({target, initiator}) => {
         return {target: target.contentWindow, targetOrigin: target.src}
       }
       return {target, targetOrigin: '*'}
-    case isWorker():
+    case isWebWorker():
       return {target: self, targetOrigin: '*'}
     case Boolean(initiator):
       const element = getChildFrameById(initiator)
