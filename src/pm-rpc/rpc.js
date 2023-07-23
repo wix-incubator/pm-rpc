@@ -1,11 +1,16 @@
 import get from 'lodash/get'
 import * as appsRegistrar from './privates/appsRegistrar'
-import {isWorker, getChildFrameById} from './privates/windowModule'
+import {isWebWorker, getChildFrameById} from './privates/windowModule'
 import Intents from './privates/Intents'
 import {buildApiFromDescription, getDescription, invokeApiFunction} from './privates/apiManager'
 import {send, sendResponse} from './privates/messageManager'
 import * as messageHandler from './privates/messageHandler'
 import {serialize as serializeError} from './privates/errorSerializer'
+
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const MessagePort = typeof globalThis.MessagePort !== 'undefined' ? globalThis.MessagePort : require('worker_threads').MessagePort
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const Worker = typeof globalThis.Worker !== 'undefined' ? globalThis.Worker : require('worker_threads').Worker
 
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
@@ -22,7 +27,7 @@ const getTargetInfoFromDef = ({target, initiator}) => {
         return {target: target.contentWindow, targetOrigin: target.src}
       }
       return {target, targetOrigin: '*'}
-    case isWorker():
+    case isWebWorker():
       return {target: self, targetOrigin: '*'}
     case Boolean(initiator):
       const element = getChildFrameById(initiator)
@@ -32,7 +37,8 @@ const getTargetInfoFromDef = ({target, initiator}) => {
   }
 }
 
-const onMessage = ({data: {appId, intent, call, args, __port: port}}) => {
+const onMessage = event => {
+  const {data: {appId, intent, call, args, __port: port}} = event
   switch (intent) {
     case Intents.REQUEST_API:
       const app = appsRegistrar.getAppById(appId)
@@ -78,7 +84,5 @@ export const request = (appId, targetDef = {}) => {
 
 export const unset = appId => {
   appsRegistrar.unregisterApp(appId)
-  if (appsRegistrar.isEmpty()) {
-    messageHandler.removeSingleHandler(onMessage)
-  }
+  messageHandler.removeSingleHandler(onMessage)
 }

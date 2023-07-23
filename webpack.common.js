@@ -20,5 +20,8 @@ module.exports = {
         presets: ['env']
       }
     }]
+  },
+  externals: {
+    worker_threads: 'worker_threads'
   }
 }

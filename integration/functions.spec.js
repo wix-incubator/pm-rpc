@@ -1,7 +1,7 @@
 import * as pmrpc from '../src/pm-rpc/index'
 import {waitForIframeLoaded} from './util/util'
 
-describe('passing functions', () => {
+describe('passing functions iframe', () => {
   let iframe
 
   it('should be able to pass functions as arguments', async () => {

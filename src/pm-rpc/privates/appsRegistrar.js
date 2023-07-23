@@ -13,4 +13,4 @@ export const hasApp = id => Boolean(_apps[id])
 
 export const unregisterApp = id => delete _apps[id]
 
-export const isEmpty = () => Object.keys(_apps).length > 0
+export const isEmpty = () => Object.keys(_apps).length === 0

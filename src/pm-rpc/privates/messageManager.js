@@ -1,8 +1,15 @@
-import {isWorker} from './windowModule'
+import {isWebWorker, isBrowser} from './windowModule'
 import cloneDeep from 'lodash/cloneDeep'
 
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const MessageChannel = typeof globalThis.MessageChannel !== 'undefined' ? globalThis.MessageChannel : require('worker_threads').MessageChannel
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const Worker = typeof globalThis.Worker !== 'undefined' ? globalThis.Worker : require('worker_threads').Worker
+// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
+const MessagePort = typeof globalThis.MessagePort !== 'undefined' ? globalThis.MessagePort : require('worker_threads').MessagePort
+
 function postMessage(target, message, targetOrigin, transfer) {
-  if (isWorker() || target instanceof Worker || target instanceof MessagePort) {
+  if (isWebWorker() || target instanceof Worker || target instanceof MessagePort) {
     target.postMessage(message, transfer)
   } else {
     target.postMessage(message, targetOrigin, transfer)
@@ -11,8 +18,21 @@ function postMessage(target, message, targetOrigin, transfer) {
 
 export const send = (message, {target, targetOrigin}, transfer = []) => new Promise(resolve => {
   const {port1, port2} = new MessageChannel()
-  port1.onmessage = ({data}) => resolve(data)
+  const handler = ({data}) => {
+    resolve(data)
+    if (isWebWorker()) {
+      port1.onmessage = null
+    } else {
+      port1.removeEventListener('message', handler)
+    }
+  }
+  if (isWebWorker() || isBrowser()) {
+    port1.onmessage = handler
+  } else {
+    port1.addEventListener('message', handler)
+  }
   message.__port = port2
+
   try {
     postMessage(target, message, targetOrigin, [port2, ...transfer])
   } catch (e) {

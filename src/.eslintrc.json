@@ -5,7 +5,8 @@
     "worker": true
   },
   "globals": {
-    "WorkerGlobalScope": false
+    "WorkerGlobalScope": false,
+    "globalThis": true
   },
   "parserOptions": {
     "sourceType": "module"
