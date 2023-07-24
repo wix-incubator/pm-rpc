@@ -32,7 +32,7 @@ export const addSingleHandler = (handler, workers) => {
       window.removeEventListener('message', handler)
     } else {
       // eslint-disable-next-line no-undef
-      const workerThreads = require('worker_threads')
+      const workerThreads = __non_webpack_require__('worker_threads')
       if (!workerThreads.isMainThread) {
         registerListener(workerThreads.parentPort, handler)
       } else {
