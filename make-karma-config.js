@@ -7,11 +7,9 @@ module.exports = function (options) {
     singleRun: true,
     frameworks: ['jasmine'],
     webpack: {
+      target: 'web',
       devtool: 'inline-source-map',
       mode: 'development',
-      externals: {
-        worker_threads: 'worker_threads'
-      },
       module: {
         rules: [
           {

@@ -1,12 +1,12 @@
 {
   "name": "pm-rpc",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/wix/pm-rpc.git"
   },
   "scripts": {
-    "build": "tsc && webpack --config webpack.dev.js && webpack --config webpack.prod.js",
+    "build": "tsc && webpack --config webpack.dev.js && webpack --config webpack.prod.js && webpack --config webpack.prod.node.js",
     "unit": "cross-env NODE_ENV=test karma start --single-run",
     "lint": "eslint .",
     "test": "npm run lint && npm run unit && npm run integration && npm run test:node",
@@ -18,7 +18,8 @@
     "build",
     "types"
   ],
-  "main": "build/pm-rpc.min.js",
+  "main": "build/pm-rpc.node.min.js",
+  "browser": "build/pm-rpc.min.js",
   "types": "types/index.d.ts",
   "license": "MIT",
   "readmeFilename": "README.md",
