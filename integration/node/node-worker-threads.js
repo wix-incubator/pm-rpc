@@ -1,5 +1,5 @@
 const path = require('path')
-const pmrpc = require('../../build/pm-rpc')
+const pmrpc = require('../../')
 const {Worker} = require('worker_threads')
 
 process.exitCode = 1

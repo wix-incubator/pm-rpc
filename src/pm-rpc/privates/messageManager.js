@@ -1,13 +1,6 @@
 import {isWebWorker, isBrowser} from './windowModule'
 import cloneDeep from 'lodash/cloneDeep'
 
-// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const MessageChannel = typeof globalThis.MessageChannel !== 'undefined' ? globalThis.MessageChannel : __non_webpack_require__('worker_threads').MessageChannel
-// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const Worker = typeof globalThis.Worker !== 'undefined' ? globalThis.Worker : __non_webpack_require__('worker_threads').Worker
-// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const MessagePort = typeof globalThis.MessagePort !== 'undefined' ? globalThis.MessagePort : __non_webpack_require__('worker_threads').MessagePort
-
 function postMessage(target, message, targetOrigin, transfer) {
   if (isWebWorker() || target instanceof Worker || target instanceof MessagePort) {
     target.postMessage(message, transfer)

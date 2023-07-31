@@ -7,11 +7,6 @@ import {send, sendResponse} from './privates/messageManager'
 import * as messageHandler from './privates/messageHandler'
 import {serialize as serializeError} from './privates/errorSerializer'
 
-// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const MessagePort = typeof globalThis.MessagePort !== 'undefined' ? globalThis.MessagePort : __non_webpack_require__('worker_threads').MessagePort
-// eslint-disable-next-line no-undef, lodash/prefer-lodash-typecheck, no-use-before-define
-const Worker = typeof globalThis.Worker !== 'undefined' ? globalThis.Worker : __non_webpack_require__('worker_threads').Worker
-
 const getTargetInfoFromDef = ({target, initiator}) => {
   switch (true) {
     // In case of MessagePort is undefined

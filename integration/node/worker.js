@@ -1,5 +1,5 @@
 const {parentPort} = require('worker_threads')
-const pmrpc = require('../../build/pm-rpc')
+const pmrpc = require('../../')
 
 pmrpc.api.set('api-from-worker', {
     example: arg => pmrpc.api.request('api-from-main', {target: parentPort})

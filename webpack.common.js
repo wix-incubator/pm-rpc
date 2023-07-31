@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 module.exports = {
+  target: 'web',
   entry: {
     app: './src/pm-rpc/index.js'
   },

@@ -1,8 +1,5 @@
 {
     "env": {
         "node": true
-    },
-    "globals": {
-        "__non_webpack_require__": true
     }
 }
