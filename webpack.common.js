@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+
 module.exports = {
   target: 'web',
   entry: {
@@ -21,8 +22,5 @@ module.exports = {
         presets: ['env']
       }
     }]
-  },
-  externals: {
-    worker_threads: 'worker_threads'
   }
 }

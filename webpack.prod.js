@@ -10,6 +10,7 @@ module.exports = merge(common, {
   },
   mode: 'production',
   plugins: [
-    new webpack.LoaderOptionsPlugin({minimize: true, output: {comments: false}, sourceMap: true})
+    new webpack.LoaderOptionsPlugin({minimize: true, output: {comments: false}, sourceMap: true}),
+    new webpack.IgnorePlugin(/^worker_threads$/)
   ]
 })
