@@ -1,36 +1,11 @@
 import get from 'lodash/get'
 import * as appsRegistrar from './privates/appsRegistrar'
-import {isWebWorker, getChildFrameById} from './privates/windowModule'
 import Intents from './privates/Intents'
 import {buildApiFromDescription, getDescription, invokeApiFunction} from './privates/apiManager'
 import {send, sendResponse} from './privates/messageManager'
 import * as messageHandler from './privates/messageHandler'
 import {serialize as serializeError} from './privates/errorSerializer'
-
-const getTargetInfoFromDef = ({target, initiator}) => {
-  switch (true) {
-    // In case of MessagePort is undefined
-    case typeof MessagePort !== 'undefined' && target instanceof MessagePort:
-      return {target}
-    // Worker is undefined in Safari in the code that is executed inside a web worker
-    case typeof Worker !== 'undefined' && target instanceof Worker:
-      return {target}
-    case typeof parent !== 'undefined' && target === parent:
-      return {target: parent, targetOrigin: '*'}
-    case Boolean(target):
-      if (target.contentWindow) { // target.contentWindow can throw error if (frame has no permission) {
-        return {target: target.contentWindow, targetOrigin: target.src}
-      }
-      return {target, targetOrigin: '*'}
-    case isWebWorker():
-      return {target: self, targetOrigin: '*'}
-    case Boolean(initiator):
-      const element = getChildFrameById(initiator)
-      return {target: element.contentWindow, targetOrigin: element.src}
-    default:
-      throw new Error('Invalid target')
-  }
-}
+import {getTargetInfoFromDef} from './privates/getTargetInfoFromDef'
 
 const onMessage = event => {
   const {data: {appId, intent, call, args, __port: port}} = event
