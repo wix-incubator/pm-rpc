@@ -1,5 +1,5 @@
 import isFunction from 'lodash/isFunction'
-
+import {registerNodeListener} from './nodeListener'
 let isListening = false
 
 const objsByEventListenerHandler = new WeakMap()
@@ -31,15 +31,7 @@ export const addSingleHandler = (handler, workers) => {
     } else if (typeof window !== 'undefined') {
       window.removeEventListener('message', handler)
     } else {
-      // eslint-disable-next-line no-undef
-      const workerThreads = require('worker_threads')
-      if (!workerThreads.isMainThread) {
-        registerListener(workerThreads.parentPort, handler)
-      } else {
-        const {port1, port2} = new workerThreads.MessageChannel()
-        registerListener(port1, handler)
-        registerListener(port2, handler)
-      }
+      registerNodeListener(registerListener, handler)
     }
   }
   
