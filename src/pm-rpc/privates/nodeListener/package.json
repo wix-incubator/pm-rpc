@@ -1,0 +1,4 @@
+{
+    "main": "node.js",
+    "browser": "index.js"
+}
