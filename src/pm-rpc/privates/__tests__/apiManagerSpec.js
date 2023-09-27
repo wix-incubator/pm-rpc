@@ -17,6 +17,16 @@ describe('apiManager', () => {
       expect(description.hasOwnProperty('g')).toBe(true)
     })
 
+    it('should map primitives to an object with primitive: true and value', () => {
+      const API = {
+        f: 'string',
+        g: 5
+      }
+      const description = apiManager.getDescription(API)
+      expect(description.f).toEqual({primitive: true, value: 'string'})
+      expect(description.g).toEqual({primitive: true, value: 5})
+    })
+
     it('should work on deep objects', () => {
         const API = {
           ns: {
@@ -34,6 +44,12 @@ describe('apiManager', () => {
         API.add.one = a => 1 + a
         const description = apiManager.getDescription(API)
         expect(description).toEqual({add: true, 'add.one': true})
+    })
+
+    it('should return empty object for empty API', () => {
+      const API = {}
+      const description = apiManager.getDescription(API)
+      expect(description).toEqual({})
     })
   })
   describe('buildApiFromDescription', () => {
