@@ -1,10 +1,11 @@
-import { OnApiCall, TargetDefinition } from './types';
+import { OnApiCall, OnApiSettled, TargetDefinition } from './types';
 
 /**
  * Set global api that will be consumed
  * @param {string} apiId Id of the api that will be requested
  * @param {object} api API that get exposed
- * @param {function} [options.onApiCall] Deprecated - callback when some api function is called
+ * @param {function} [options.onApiCall] - callback when some api function is called
+ * @param {function} [options.onApiSettled] - callback when some api function is settled
  * @param {Worker[]} [options.workers] - array of Workers that can consume API
  */
 export declare const set: <T extends unknown>(
@@ -12,6 +13,7 @@ export declare const set: <T extends unknown>(
   api: T,
   options?: {
     onApiCall?: OnApiCall<unknown[]>;
+    onApiSettled?: OnApiSettled<unknown[]>;
     workers?: Worker[];
   },
 ) => void;

@@ -21,24 +21,29 @@ const onMessage = event => {
         const noApiError = new Error(`The API for ${appId} has been removed`)
         return sendResponse(port, Intents.REJECT)(serializeError(noApiError))
       }
+      let onApiCallResult
       if (appData.onApiCall) {
-        appData.onApiCall({appId, call, args})
+        onApiCallResult = appData.onApiCall({appId, call, args})
       }
       const func = get(appData.app, call)
       return invokeApiFunction(func, args)
-        .then(sendResponse(port, Intents.RESOLVE), sendResponse(port, Intents.REJECT))
+        .then(sendResponse(port, Intents.RESOLVE), sendResponse(port, Intents.REJECT)).then(() => { 
+          if (appData.onApiSettled) {
+            appData.onApiSettled({appId, call, args, onApiCallResult})
+          }
+        })
   }
   return Promise.resolve()
 }
 
-export const set = (appId, app, {onApiCall, workers} = {}, workersDeprecated) => {
+export const set = (appId, app, {onApiCall, onApiSettled, workers} = {}, workersDeprecated) => {
   if (workersDeprecated) {
     workers = workersDeprecated
   }
   if (appsRegistrar.hasApp(appId)) {
     appsRegistrar.unregisterApp(appId)
   }
-  appsRegistrar.registerApp(appId, app, onApiCall)
+  appsRegistrar.registerApp(appId, app, onApiCall, onApiSettled)
   messageHandler.addSingleHandler(onMessage, workers)
 }
 

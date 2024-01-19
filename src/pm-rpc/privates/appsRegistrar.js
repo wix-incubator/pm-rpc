@@ -1,8 +1,8 @@
 import get from 'lodash/get'
 const _apps = {}
 
-export const registerApp = (id, app, onApiCall) => {
-  _apps[id] = {app, onApiCall}
+export const registerApp = (id, app, onApiCall, onApiSettled) => {
+  _apps[id] = {app, onApiCall, onApiSettled}
 }
 
 export const getAppById = id => get(_apps, [id, 'app'])

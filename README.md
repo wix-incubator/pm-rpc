@@ -99,6 +99,32 @@ rpc.api.set(appId, api, {onApiCall: function (data) {
 }});
 ```
 
+#### Using `onApiSettled`
+When setting an API, you can also pass an options parameter with an `onApiSettled` option.
+This callback will be called whenever any API method is invoked from any caller after the api has settled, with the following object:
+* **appId** - The ID of the app passed
+* **call** - The name of the function to invoke
+* **args** - An array of arguments passed
+* **onApiCallResult** - The result from the `onApiCall` callback
+
+e.g.:
+```javascript
+const api = {
+  syncFunc(...args) {
+    return someComputation(...args);
+  },
+  asyncFunc(...args) {
+    return performSomeAjaxRequest(args)
+  }
+}
+rpc.api.set(appId, api, {
+    onApiCall:() => performance.now(),
+    onApiSettled: message => {
+      console.log(`Method: ${message.call} was executed in ${performance.now() - message.onApiCallResult} ms`)
+    }
+});
+```
+
 #### Using with WebWorker 
 
 When setting an API, you can specify workers that may consume requested API. Inside worker, you can request 

@@ -38,14 +38,20 @@ describe('rpc', () => {
 
     it('should set the API in the appsRegistrar and wait for requests if there is no app with the ID', () => {
       rpc.set(fakeId, fakeAPI)
-      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, undefined)
+      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, undefined, undefined)
       expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), undefined)
     })
 
     it('should set an onApiCall listener if it was passed', () => {
       const onApiCall = jasmine.createSpy('onApiCall')
       rpc.set(fakeId, fakeAPI, {onApiCall})
-      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
+      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall, undefined)
+    })
+
+    it('should set an onApiSettled listener if it was passed', () => {
+      const onApiSettled = jasmine.createSpy('onApiSettled')
+      rpc.set(fakeId, fakeAPI, {onApiSettled})
+      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, undefined, onApiSettled)
     })
 
     it('should unregister and register new API', () => {
@@ -53,7 +59,7 @@ describe('rpc', () => {
       spyOn(appsRegistrar, 'hasApp').and.returnValue(true)
       rpc.set(fakeId, fakeAPI, {onApiCall})
         expect(appsRegistrar.unregisterApp).toHaveBeenCalledWith(fakeId)
-      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall)
+      expect(appsRegistrar.registerApp).toHaveBeenCalledWith(fakeId, fakeAPI, onApiCall, undefined)
       expect(messageHandler.addSingleHandler).toHaveBeenCalledWith(jasmine.any(Function), undefined)
     })
 
@@ -150,17 +156,24 @@ describe('rpc', () => {
             expect(port.postMessage).toHaveBeenCalledWith({intent: Intents.REJECT, result: {type: 'Error', message: errorMessage, stack: jasmine.any(String)}})
           }).then(done)
         })
-        it('should call a callback if one was sent', () => {
-          const onApiCall = jasmine.createSpy('onApiCall')
-          spyOn(appsRegistrar, 'getAppData').and.returnValue({app: fakeAPI, onApiCall})
+        it('should call callbacks if they were set', () => {
+          const linkedCbResult = 'result from specific onApiCall cb'
+          const onApiCall = jasmine.createSpy('onApiCall').and.returnValue(linkedCbResult)
+          const onApiSettled = jasmine.createSpy('onApiCall')
+          spyOn(appsRegistrar, 'getAppData').and.returnValue({app: fakeAPI, onApiCall, onApiSettled})
           rpc.set(fakeId, fakeAPI, {onApiCall})
-          simulateRequest({
+          const {promise} = simulateRequest({
             intent: Intents.INVOKE_FUNCTION,
             appId: fakeId,
             call: 'identity',
             args: [1]
           })
           expect(onApiCall).toHaveBeenCalledWith({appId: fakeId, call: 'identity', args: [1]})
+          promise.then(
+            () => {
+              expect(onApiSettled).toHaveBeenCalledWith({appId: fakeId, call: 'identity', args: [1], onApiCallResult: linkedCbResult})
+            }
+          )
         })
       })
     })
